@@ -49,4 +49,3 @@ func _open_door(interactor : CharacterBody3D):
 	var on_outside := true if dist_to_entry <= dist_to_exit else false
 	
 	interactor.global_position = exit_point.global_position if on_outside else entry_point.global_position
-
