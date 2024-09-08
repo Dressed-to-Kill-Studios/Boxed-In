@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://bq60k85kqw557"]
+
+[ext_resource type="PackedScene" uid="uid://c6ohmgp7b1odi" path="res://assets/blender_imports/storage_room.glb" id="1_6o44y"]
+
+[node name="storage_room" instance=ExtResource("1_6o44y")]

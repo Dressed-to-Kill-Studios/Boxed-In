@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://cg3f1pfn7upc5"]
+[gd_scene load_steps=3 format=3 uid="uid://cg3f1pfn7upc5"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_u2pkw"]
+[ext_resource type="Script" path="res://scripts/facility_generation/facility_generation.gd" id="2_l7x0x"]
 
 [node name="Game" type="Node"]
 script = ExtResource("1_u2pkw")
+
+[node name="Facility" type="Node" parent="."]
+script = ExtResource("2_l7x0x")
