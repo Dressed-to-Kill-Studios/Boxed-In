@@ -2,7 +2,7 @@
 
 [sub_resource type="Gradient" id="Gradient_pha7e"]
 interpolation_mode = 2
-colors = PackedColorArray(0, 0, 0, 1, 0.85, 0.8825, 1, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.8, 0.843333, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_gd11j"]
 gradient = SubResource("Gradient_pha7e")
