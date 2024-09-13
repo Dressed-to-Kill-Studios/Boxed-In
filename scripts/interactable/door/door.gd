@@ -14,13 +14,11 @@ enum LOCKED_STATES {
 @export_group("Required")
 @export var entry_point : Marker3D
 @export var exit_point : Marker3D
-@export var interact_camera : Camera3D
 
 
 func _ready():
 	assert(entry_point, "No Entry Point")
 	assert(exit_point, "No Exit Point")
-	assert(interact_camera, "No Interact Camera")
 
 
 func interact(interactor : CharacterBody3D) -> String:
