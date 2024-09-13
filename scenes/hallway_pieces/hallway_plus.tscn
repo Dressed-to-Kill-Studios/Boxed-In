@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://diog72w76boy2"]
+
+[ext_resource type="PackedScene" uid="uid://dw3s6n23epwbn" path="res://assets/blender_imports/hallway_pieces/hallway_plus.glb" id="1_0c577"]
+[ext_resource type="Script" path="res://scripts/facility/hallway_piece.gd" id="2_ho7j3"]
+[ext_resource type="Script" path="res://scripts/facility/connection_marker.gd" id="3_3i8rn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2eegx"]
+size = Vector3(29, 7, 29)
+
+[node name="HallwayPlus" node_paths=PackedStringArray("connection_markers", "clearance_area") instance=ExtResource("1_0c577")]
+script = ExtResource("2_ho7j3")
+connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker"), NodePath("ConnectionMarkerHolder/ConnectonMarker2"), NodePath("ConnectionMarkerHolder/ConnectonMarker3"), NodePath("ConnectionMarkerHolder/ConnectonMarker4")]
+clearance_area = NodePath("ClearanceArea")
+
+[node name="ConnectionMarkerHolder" type="Node" parent="." index="1"]
+
+[node name="ConnectonMarker" type="Marker3D" parent="ConnectionMarkerHolder" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15)
+script = ExtResource("3_3i8rn")
+
+[node name="ConnectonMarker2" type="Marker3D" parent="ConnectionMarkerHolder" index="1"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -15)
+script = ExtResource("3_3i8rn")
+
+[node name="ConnectonMarker3" type="Marker3D" parent="ConnectionMarkerHolder" index="2"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 15, 0, -6.55671e-07)
+script = ExtResource("3_3i8rn")
+
+[node name="ConnectonMarker4" type="Marker3D" parent="ConnectionMarkerHolder" index="3"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -15, 0, 6.55671e-07)
+script = ExtResource("3_3i8rn")
+
+[node name="ClearanceArea" type="Area3D" parent="." index="2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ClearanceArea" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+shape = SubResource("BoxShape3D_2eegx")
