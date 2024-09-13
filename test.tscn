@@ -1,31 +1,22 @@
-[gd_scene load_steps=8 format=3 uid="uid://0aid2q34b8wt"]
+[gd_scene load_steps=7 format=3 uid="uid://0aid2q34b8wt"]
 
 [ext_resource type="PackedScene" uid="uid://diog72w76boy2" path="res://scenes/hallway_pieces/hallway_plus.tscn" id="1_o40ke"]
+[ext_resource type="Environment" uid="uid://cbnw1gqjj7gu" path="res://static/environment.tres" id="1_pg54y"]
 [ext_resource type="PackedScene" uid="uid://bo2a2h1k70hyg" path="res://scenes/hallway_pieces/hallway_T.tscn" id="2_03blk"]
 [ext_resource type="PackedScene" uid="uid://dulhdqox31ym0" path="res://scenes/hallway_pieces/hallway_L.tscn" id="3_g3rgt"]
 [ext_resource type="PackedScene" uid="uid://c158wp3l6o5jq" path="res://scenes/doors/container_door.tscn" id="4_oup4k"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q4h3d"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-
-[sub_resource type="Sky" id="Sky_wauc5"]
-sky_material = SubResource("ProceduralSkyMaterial_q4h3d")
-
-[sub_resource type="Environment" id="Environment_ag34c"]
-background_mode = 1
-background_color = Color(0.456, 0.456, 0.6, 1)
-sky = SubResource("Sky_wauc5")
-tonemap_mode = 2
-glow_enabled = true
+[ext_resource type="PackedScene" uid="uid://ku0ro42kagdu" path="res://entities/player/player.tscn" id="5_dc44o"]
 
 [node name="Node3D" type="Node3D"]
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_ag34c")
+environment = ExtResource("1_pg54y")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(0.707107, 0.270598, -0.653281, 0, 0.92388, 0.382683, 0.707107, -0.270598, 0.653281, -4, 5, 4)
+current = true
 
 [node name="HallwayPlus" parent="." instance=ExtResource("1_o40ke")]
 
@@ -37,6 +28,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30)
 
 [node name="ContainerDoor" parent="." instance=ExtResource("4_oup4k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -5)
+locked_state = 2
 
 [node name="ContainerDoor11" parent="." instance=ExtResource("4_oup4k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -35)
@@ -187,3 +179,6 @@ omni_range = 10.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 2.5, -30)
 shadow_enabled = true
 omni_range = 10.0
+
+[node name="Player" parent="." instance=ExtResource("5_dc44o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15984, 4.76837e-07, 0.299794)
