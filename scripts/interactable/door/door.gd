@@ -7,9 +7,16 @@ enum LOCKED_STATES {
 	LOCKED_FROM_INSIDE,
 }
 @export var locked_state : LOCKED_STATES = LOCKED_STATES.UNLOCKED
-@export var unlocked_messages : Array[String] = ["The door is unlocked."]
-@export var locked_messages : Array[String] = ["The door is locked.", "I can't open this door."]
-@export var locked_from_inside_messages : Array[String] = ["The door is locked from the other side."]
+@export var unlocked_messages : Array[String] = [
+	"The door is unlocked."
+	]
+@export var locked_messages : Array[String] = [
+	"The door is locked.", 
+	"I can't open this door.",
+	]
+@export var locked_from_inside_messages : Array[String] = [
+	"The door is locked from the other side."
+	]
 
 @export_group("Required")
 @export var entry_point : Marker3D
