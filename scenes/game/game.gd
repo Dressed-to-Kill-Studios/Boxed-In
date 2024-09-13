@@ -6,16 +6,14 @@ enum DIFFICULTIES {
 	NORMAL,
 	HARD,
 }
+
 var current_difficulty : DIFFICULTIES
 
-#Character
-enum CHARACTERS {
-	JOHN,
-	EMILY,
-}
-var playing_as : CHARACTERS
+@onready var facility = %Facility
 
 
-func _init(_playing_as : CHARACTERS = CHARACTERS.JOHN, _difficulty : DIFFICULTIES = DIFFICULTIES.NORMAL):
-	playing_as = _playing_as
+func _init(_difficulty : DIFFICULTIES = DIFFICULTIES.NORMAL):
 	current_difficulty = _difficulty
+
+func _ready():
+	if not Engine.is_editor_hint(): facility.generate_facility()
