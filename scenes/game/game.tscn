@@ -1,17 +1,27 @@
-[gd_scene load_steps=5 format=3 uid="uid://cg3f1pfn7upc5"]
+[gd_scene load_steps=8 format=3 uid="uid://cg3f1pfn7upc5"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_u2pkw"]
 [ext_resource type="Script" path="res://scripts/facility/facility_generation.gd" id="2_l7x0x"]
 [ext_resource type="PackedScene" uid="uid://ku0ro42kagdu" path="res://entities/player/player.tscn" id="3_kfemo"]
+[ext_resource type="PackedScene" uid="uid://bdru0lhsuv0tj" path="res://scenes/hallway_pieces/hallway_straight.tscn" id="3_xcpv3"]
 [ext_resource type="Script" path="res://scripts/facility/connection_marker.gd" id="4_6s4ma"]
+[ext_resource type="Script" path="res://scripts/facility/hallway_piece.gd" id="4_wt23p"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bxn76"]
+size = Vector3(25, 14, 20)
 
 [node name="Game" type="Node"]
 script = ExtResource("1_u2pkw")
 
-[node name="Facility" type="Node" parent="."]
+[node name="Facility" type="Node3D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("2_l7x0x")
-max_depth = 1
+
+[node name="HallwayStraight" type="Node3D" parent="Facility" node_paths=PackedStringArray("clearance_area", "connection_markers") instance=ExtResource("3_xcpv3")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.31134e-06, 0, 15)
+script = ExtResource("4_wt23p")
+clearance_area = NodePath("ClearanceArea")
+connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker"), NodePath("ConnectionMarkerHolder/ConnectonMarker2")]
 
 [node name="Player" parent="." instance=ExtResource("3_kfemo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.217426, -1.90735e-06, -0.144447)
@@ -20,3 +30,9 @@ visible = false
 [node name="Origin" type="Marker3D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("4_6s4ma")
+
+[node name="SafeRoomClearnaceArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SafeRoomClearnaceArea"]
+shape = SubResource("BoxShape3D_bxn76")

@@ -11,12 +11,13 @@ const HALLWAYS : Dictionary = {
 
 @export var generate : bool = false : set = _set_generate
 @export var clear : bool = false : set = _set_clear
-@export var max_depth : int = 5
+@export_range(0, 10) var max_depth : int = 5
 
 var used_markers : Dictionary = {}  # Dictionary to track used markers
 
 
 func generate_facility():
+	clear_facility()
 	_start_generation()
 
 
@@ -43,7 +44,7 @@ func _place_piece_at_marker(previous_marker : ConnectonMarker, packed_piece : Pa
 		packed_piece = HALLWAYS["end"]
 	
 	# Place the new piece
-	var piece_instance : HallwayPiece = packed_piece.instantiate()
+	var piece_instance : HallwayPiece = packed_piece.instantiate() as HallwayPiece
 	add_child(piece_instance, true)
 	piece_instance.set_owner(self.get_parent())
 	
@@ -61,16 +62,23 @@ func _place_piece_at_marker(previous_marker : ConnectonMarker, packed_piece : Pa
 	var rotation_axis = previous_marker_forward.cross(new_marker_forward).normalized()
 	var rotation_angle = acos(previous_marker_forward.dot(new_marker_forward))
 	
-	# Create the rotation quaternion
+	# Create and initialize the rotation quaternion
 	var rotation_quat : Quaternion
 	if rotation_angle < 0.001:
-		# If the angle is very small, no significant rotation is needed
-		rotation_quat = Quaternion()
+		rotation_quat = Quaternion()  # No significant rotation needed
 	else:
 		rotation_quat = Quaternion(rotation_axis, rotation_angle)
 	
 	# Apply the rotation to the piece_instance
 	piece_instance.global_transform.basis = Basis(rotation_quat) * piece_instance.global_transform.basis
+	
+	# After rotating the piece, check if the markers are facing the same way
+	new_marker_forward = new_marker.global_transform.basis.z.normalized()  # Recalculate the new forward vector after rotation
+	
+	if new_marker_forward.dot(previous_marker_forward) > 0.99:
+		# If the new marker is facing the same way as the previous one (almost parallel), rotate it 180 degrees
+		var correction_quat = Quaternion(Vector3.UP, PI)  # Rotate 180 degrees around the up axis
+		piece_instance.global_transform.basis = Basis(correction_quat) * piece_instance.global_transform.basis
 	
 	# Calculate the position offset after applying the rotation
 	var target_position = previous_marker.global_transform.origin  # Position of the previous marker
@@ -84,17 +92,9 @@ func _place_piece_at_marker(previous_marker : ConnectonMarker, packed_piece : Pa
 	var position_offset = target_position - rotated_marker_position
 	piece_instance.global_transform.origin += position_offset
 	
-	# Track the new_marker as used in our dictionary
+	# Track the new_marker and previous_marker as used in our dictionary
 	used_markers[previous_marker] = true
 	used_markers[new_marker] = true
-	
-	print("Piece instance: ", piece_instance)
-	print("Marker connected to: ", previous_marker)
-	print("On: ", previous_piece)
-	print("Using: ", new_marker)
-	print("Position Offset: ", position_offset)
-	print("Rotation Quaternion: ", rotation_quat)
-	print("\n")
 	
 	# Add connecting pieces recursively
 	var connection_points : Array[ConnectonMarker] = piece_instance.connection_markers
