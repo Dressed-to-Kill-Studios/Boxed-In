@@ -1,4 +1,4 @@
 extends Marker3D
-class_name ConnectonMarker
+class_name ConnectionMarker
 
 var connected : bool = false
