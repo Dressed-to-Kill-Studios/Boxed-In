@@ -1,6 +1,9 @@
 @tool
 extends Node3D
 
+signal generation_finished
+
+const HALLWAY_BLOCKAGE = preload("res://scenes/hallway_pieces/hallway_blockage.tscn")
 const HALLWAYS : Dictionary = {
 	"end" : preload("res://scenes/hallway_pieces/hallway_end.tscn"),
 	"straight" : preload("res://scenes/hallway_pieces/hallway_straight.tscn"),
@@ -12,14 +15,16 @@ const HALLWAYS : Dictionary = {
 @export var generate : bool = false : set = _set_generate
 @export var clear : bool = false : set = _set_clear
 @export_range(0, 10) var max_depth : int = 5
+@export_flags_3d_physics var clearance_collision_layer = 1
 
-var used_markers : Dictionary = {}  # Dictionary to track used markers
+var used_markers : Dictionary = {}
 
 
 func generate_facility():
 	clear_facility()
 	_start_generation()
-
+	
+	_check_overlaps()
 
 func clear_facility():
 	for child in get_children():
@@ -40,20 +45,38 @@ func _start_generation():
 
 
 func _place_piece_at_marker(previous_marker : ConnectonMarker, packed_piece : PackedScene, previous_piece : HallwayPiece, current_depth : int):
-	if current_depth >= max_depth:
-		packed_piece = HALLWAYS["end"]
+	# Create a raycast to detect potential collisions
+	var ray_query = PhysicsRayQueryParameters3D.new()
+	ray_query.from = previous_marker.global_transform.origin + Vector3.UP * 4.5
+	ray_query.to = ray_query.from + previous_marker.global_transform.basis.z.normalized() * 30  # 30 units forward
+	ray_query.collision_mask = clearance_collision_layer
+	
+	if not previous_piece: ray_query.exclude = [%SafeRoomClearnaceArea]
+	
+	var result = get_world_3d().direct_space_state.intersect_ray(ray_query)
+	
+	if result and previous_piece: # Hit something
+		var blockage_instance = HALLWAY_BLOCKAGE.instantiate()
+		add_child(blockage_instance, true)
+		blockage_instance.set_owner(self.get_parent())
+		
+		blockage_instance.global_transform = previous_marker.global_transform
+		
+		return # No need to place a piece if blockage is placed
+	
+	await get_tree().physics_frame
+	
+	if current_depth >= max_depth: packed_piece = HALLWAYS["end"]
 	
 	# Place the new piece
-	var piece_instance : HallwayPiece = packed_piece.instantiate() as HallwayPiece
+	var piece_instance : HallwayPiece = packed_piece.instantiate()
 	add_child(piece_instance, true)
 	piece_instance.set_owner(self.get_parent())
 	
-	if previous_marker == null:
-		# If this is the starting piece, no need for transformation
-		return
+	if previous_marker == null: return # If this is the starting piece, no need for transformation
 	
 	# Find the connection marker for the new piece that should attach to the previous_marker
-	var new_marker : ConnectonMarker = piece_instance.connection_markers.pick_random()  # Ensure correct marker selection
+	var new_marker : ConnectonMarker = piece_instance.connection_markers.pick_random()
 	
 	# Calculate the rotation needed
 	var previous_marker_forward = previous_marker.global_transform.basis.z.normalized()
@@ -96,14 +119,32 @@ func _place_piece_at_marker(previous_marker : ConnectonMarker, packed_piece : Pa
 	used_markers[previous_marker] = true
 	used_markers[new_marker] = true
 	
+	await get_tree().physics_frame
+	
 	# Add connecting pieces recursively
 	var connection_points : Array[ConnectonMarker] = piece_instance.connection_markers
 	for marker in connection_points:
-		if used_markers.has(marker):
-			continue
+		if used_markers.has(marker): continue
 		
 		var chosen_piece = _get_random_hallway_piece()
-		_place_piece_at_marker(marker, chosen_piece, piece_instance, current_depth + 1)
+		_place_piece_at_marker.call_deferred(marker, chosen_piece, piece_instance, current_depth + 1)
+		
+		await get_tree().physics_frame
+		_check_overlaps()
+	
+	_check_overlaps()
+
+func _check_overlaps():
+	for piece in get_children():
+			for check_piece in get_children():
+				if check_piece == piece: continue
+				if not check_piece.global_position == piece.global_position: continue
+				
+				piece.queue_free()
+				check_piece.queue_free()
+				
+				print("Deleted: %s and the piece overlapping(%s)" % [piece, check_piece])
+
 
 
 func _get_random_hallway_piece() -> PackedScene:

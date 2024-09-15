@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0v6tfuavs42s"]
+
+[ext_resource type="PackedScene" uid="uid://bqufh0atcx3cj" path="res://assets/blender_imports/hallway_pieces/hallway_blockage.glb" id="1_jnflu"]
+
+[node name="HallwayBlockage" instance=ExtResource("1_jnflu")]
