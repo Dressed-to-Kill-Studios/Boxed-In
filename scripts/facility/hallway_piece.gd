@@ -1,23 +1,10 @@
 extends Node3D
 class_name HallwayPiece
 
-signal obstructed_placement(hallway_piece : HallwayPiece)
-
+@export var connection_markers : Array[ConnectonMarker]
 @export var clearance_area : Area3D
-@export var connection_markers : Array[ConnectionMarker]
 
 
-func _ready():
-	pass #_check_placement()
-
-
-func _connect_camera_areas():
-	pass
-
-
-func _set_active_camera():
-	pass
-
-
-func _check_placement():
-	if clearance_area.has_overlapping_areas(): obstructed_placement.emit(self)
+func is_placement_clear() -> bool:
+	var is_cleared = !clearance_area.has_overlapping_bodies()
+	return is_cleared
