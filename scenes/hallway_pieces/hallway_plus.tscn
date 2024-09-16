@@ -15,9 +15,8 @@ size = Vector3(10, 6, 20)
 [sub_resource type="BoxShape3D" id="BoxShape3D_rh3ei"]
 size = Vector3(29, 7, 29)
 
-[node name="HallwayPlus" node_paths=PackedStringArray("clearance_area", "connection_markers") instance=ExtResource("1_0c577")]
+[node name="HallwayPlus" node_paths=PackedStringArray("connection_markers") instance=ExtResource("1_0c577")]
 script = ExtResource("2_ho7j3")
-clearance_area = NodePath("")
 connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker"), NodePath("ConnectionMarkerHolder/ConnectonMarker2"), NodePath("ConnectionMarkerHolder/ConnectonMarker3"), NodePath("ConnectionMarkerHolder/ConnectonMarker4")]
 
 [node name="ConnectionMarkerHolder" type="Node3D" parent="." index="1"]
@@ -44,9 +43,8 @@ script = ExtResource("4_jbrdo")
 [node name="Camera3D" type="Camera3D" parent="CameraConfiguration" index="0"]
 transform = Transform3D(0.707107, 0.270598, -0.653281, 0, 0.92388, 0.382683, 0.707107, -0.270598, 0.653281, -5, 4, 5)
 
-[node name="CameraArea" type="Area3D" parent="CameraConfiguration" index="1" node_paths=PackedStringArray("assigned_camera")]
+[node name="CameraArea" type="Area3D" parent="CameraConfiguration" index="1"]
 script = ExtResource("5_2oqt3")
-assigned_camera = NodePath("../Camera3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CameraConfiguration/CameraArea" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 3, 0)

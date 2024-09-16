@@ -1,7 +1,7 @@
 extends Node3D
 class_name HallwayPiece
 
-@export var connection_markers : Array[ConnectonMarker]
+@export var connection_markers : Array[ConnectionMarker]
 @export var clearance_area : Area3D
 
 

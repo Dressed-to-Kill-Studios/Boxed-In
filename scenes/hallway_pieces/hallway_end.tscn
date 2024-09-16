@@ -7,9 +7,8 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_yo7q1"]
 size = Vector3(29, 7, 29)
 
-[node name="HallwayEnd" node_paths=PackedStringArray("clearance_area", "connection_markers") instance=ExtResource("1_0gdu2")]
+[node name="HallwayEnd" node_paths=PackedStringArray("connection_markers") instance=ExtResource("1_0gdu2")]
 script = ExtResource("2_1jo3f")
-clearance_area = NodePath("")
 connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker")]
 
 [node name="ConnectionMarkerHolder" type="Node3D" parent="." index="1"]
