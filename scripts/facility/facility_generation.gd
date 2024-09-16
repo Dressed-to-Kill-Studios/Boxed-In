@@ -15,6 +15,7 @@ const HALLWAYS : Dictionary = {
 @export var generate : bool = false : set = _set_generate
 @export var clear : bool = false : set = _set_clear
 @export var max_depth : int = 5
+@export var creat_loops : bool = true
 @export var hallway_weights : Dictionary = {
 	"end" : 1,
 	"straight" : 10,
@@ -68,7 +69,7 @@ func _place_piece_at_marker(previous_marker : ConnectionMarker, packed_piece : P
 	
 	if result:
 		# If there's a collision, and can't loop, place a blockage and stop
-		if not _check_if_looped(previous_marker):
+		if not _check_if_looped(previous_marker) or not creat_loops:
 			_place_blockage_at_marker(previous_marker)
 		
 		_process_free_markers()
