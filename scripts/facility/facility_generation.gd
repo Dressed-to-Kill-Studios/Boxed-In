@@ -14,29 +14,30 @@ const HALLWAYS : Dictionary = {
 
 @export var generate : bool = false : set = _set_generate
 @export var clear : bool = false : set = _set_clear
-@export_range(0, 10) var max_depth : int = 5
+@export var max_depth : int = 5
 @export var hallway_weights : Dictionary = {
 	"end" : 1,
 	"straight" : 10,
-	"L shape" : 25,
+	"L shape" : 15,
 	"T shape" : 20,
-	"plus shape" : 15
+	"plus shape" : 25
 }
 @export_flags_3d_physics var clearance_collision_layer = 1
 
+var current_depth : int = 0
 var free_markers : Array = []
 
 
 func generate_facility():
 	clear_facility()
+	await get_tree().create_timer(0.25).timeout
 	_start_generation()
-	emit_signal("generation_finished")
 
 
 func clear_facility():
-	for child in get_children():
-		child.queue_free()
+	for child in get_children(): child.queue_free()
 	free_markers.clear()  # Clear free markers
+	current_depth = 0
 
 
 func _set_generate(_value):
@@ -48,12 +49,13 @@ func _set_clear(_value):
 
 
 func _start_generation():
-	# Start with a piece at the origin
+	current_depth = 0
+	
 	var start_piece : PackedScene = _get_random_hallway_piece()
-	_place_piece_at_marker(%Origin, start_piece, 0)
+	_place_piece_at_marker(%Origin, start_piece)
 
 
-func _place_piece_at_marker(previous_marker : ConnectionMarker, packed_piece : PackedScene, current_depth : int):
+func _place_piece_at_marker(previous_marker : ConnectionMarker, packed_piece : PackedScene):
 	# Physics ray check for collisions ahead
 	var ray_query = PhysicsRayQueryParameters3D.new()
 	ray_query.from = previous_marker.global_transform.origin + Vector3.UP * 4.5
@@ -65,10 +67,11 @@ func _place_piece_at_marker(previous_marker : ConnectionMarker, packed_piece : P
 	var result = get_world_3d().direct_space_state.intersect_ray(ray_query)
 	
 	if result:
-		# If there's a collision, place a blockage and stop
-		_place_blockage_at_marker(previous_marker)
-		_process_free_markers(current_depth)
-		print("Collision detected, blocking off")
+		# If there's a collision, and can't loop, place a blockage and stop
+		if not _check_if_looped(previous_marker):
+			_place_blockage_at_marker(previous_marker)
+		
+		_process_free_markers()
 		return
 	
 	await get_tree().physics_frame
@@ -98,10 +101,10 @@ func _place_piece_at_marker(previous_marker : ConnectionMarker, packed_piece : P
 	await get_tree().physics_frame
 	
 	# Start placing new pieces at the newly added markers
-	_process_free_markers(current_depth)
+	_process_free_markers()
 
 
-func _process_free_markers(current_depth : int):
+func _process_free_markers():
 	if free_markers.is_empty(): 
 		generation_finished.emit()
 		return
@@ -110,7 +113,8 @@ func _process_free_markers(current_depth : int):
 	free_markers.erase(marker_to_place)  # Remove the marker from free_markers after use
 	var chosen_piece = _get_random_hallway_piece()
 	
-	_place_piece_at_marker(marker_to_place, chosen_piece, current_depth + 1)
+	current_depth += 1
+	_place_piece_at_marker(marker_to_place, chosen_piece)
 
 
 func _align_piece_to_marker(piece_instance : HallwayPiece, previous_marker : ConnectionMarker, new_marker : ConnectionMarker):
@@ -146,6 +150,22 @@ func _place_blockage_at_marker(marker : ConnectionMarker):
 	blockage_instance.set_owner(self.get_parent())
 	
 	blockage_instance.global_transform = marker.global_transform
+
+
+func _check_if_looped(current_marker : ConnectionMarker) -> bool:
+	var tolerance = 0.01
+	
+	for marker in free_markers:
+		if marker == current_marker: continue
+		
+		if marker.global_position.distance_to(current_marker.global_position) < tolerance: 
+			
+			free_markers.erase(current_marker)
+			free_markers.erase(marker)
+			
+			return true
+	
+	return false
 
 
 func _get_random_hallway_piece() -> PackedScene:
