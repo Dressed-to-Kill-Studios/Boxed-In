@@ -24,18 +24,19 @@ const HALLWAYS : Dictionary = {
 }
 @export_flags_3d_physics var clearance_collision_layer = 1
 
-var used_markers : Dictionary = {}
+var free_markers : Array = []
 
 
 func generate_facility():
 	clear_facility()
 	_start_generation()
+	emit_signal("generation_finished")
 
 
 func clear_facility():
 	for child in get_children():
 		child.queue_free()
-	used_markers.clear()  # Clear the marker dictionary
+	free_markers.clear()  # Clear free markers
 
 
 func _set_generate(_value):
@@ -47,51 +48,69 @@ func _set_clear(_value):
 
 
 func _start_generation():
+	# Start with a piece at the origin
 	var start_piece : PackedScene = _get_random_hallway_piece()
-	_place_piece_at_marker(%Origin, start_piece, null, 0)
+	_place_piece_at_marker(%Origin, start_piece, 0)
 
 
-func _place_piece_at_marker(previous_marker : ConnectionMarker, packed_piece : PackedScene, previous_piece : HallwayPiece, current_depth : int):
+func _place_piece_at_marker(previous_marker : ConnectionMarker, packed_piece : PackedScene, current_depth : int):
 	# Physics ray check for collisions ahead
 	var ray_query = PhysicsRayQueryParameters3D.new()
 	ray_query.from = previous_marker.global_transform.origin + Vector3.UP * 4.5
 	ray_query.to = ray_query.from + previous_marker.global_transform.basis.z.normalized() * 30  # 30 units forward
 	ray_query.collision_mask = clearance_collision_layer
 	
-	if not previous_piece:
-		ray_query.exclude = [%SafeRoomClearnaceArea]  # Exclude the safe room area
+	if current_depth == 0: ray_query.exclude = [%SafeRoomClearnaceArea]
 	
 	var result = get_world_3d().direct_space_state.intersect_ray(ray_query)
 	
-	if result and previous_piece:
+	if result:
 		# If there's a collision, place a blockage and stop
 		_place_blockage_at_marker(previous_marker)
+		_process_free_markers(current_depth)
+		print("Collision detected, blocking off")
 		return
 	
-	# Physics frame to ensure collision detection is accurate
 	await get_tree().physics_frame
 	
-	if current_depth >= max_depth:
-		packed_piece = HALLWAYS["end"]
+	if current_depth >= max_depth: packed_piece = HALLWAYS["end"]
 	
 	# Place the new piece
 	var piece_instance : HallwayPiece = packed_piece.instantiate()
 	add_child(piece_instance, true)
 	piece_instance.set_owner(self.get_parent())
 	
-	if previous_marker == null:
-		return  # If this is the starting piece, no need for transformation
-	
 	# Align the new piece with the previous marker
 	var new_marker : ConnectionMarker = piece_instance.connection_markers.pick_random()
 	_align_piece_to_marker(piece_instance, previous_marker, new_marker)
 	
-	# Track the markers in the dictionary
-	used_markers[previous_marker] = true
-	used_markers[new_marker] = true
+	#Make sure just used markers arent free
+	free_markers.erase(new_marker)
+	free_markers.erase(previous_marker)
 	
-	# Recursively add connecting pieces
-	await _connect_new_pieces(piece_instance, current_depth)
+	var piece_markers : Array[ConnectionMarker] = piece_instance.connection_markers
+	for marker in piece_markers:
+		if marker == new_marker: continue # Don't add marker that was just use
+		if free_markers.has(marker): continue # if marker already there dont add it again
+		
+		free_markers.append(marker)
+	
+	await get_tree().physics_frame
+	
+	# Start placing new pieces at the newly added markers
+	_process_free_markers(current_depth)
+
+
+func _process_free_markers(current_depth : int):
+	if free_markers.is_empty(): 
+		generation_finished.emit()
+		return
+	
+	var marker_to_place : ConnectionMarker = free_markers.pick_random()
+	free_markers.erase(marker_to_place)  # Remove the marker from free_markers after use
+	var chosen_piece = _get_random_hallway_piece()
+	
+	_place_piece_at_marker(marker_to_place, chosen_piece, current_depth + 1)
 
 
 func _align_piece_to_marker(piece_instance : HallwayPiece, previous_marker : ConnectionMarker, new_marker : ConnectionMarker):
@@ -119,17 +138,6 @@ func _align_piece_to_marker(piece_instance : HallwayPiece, previous_marker : Con
 	# Align the position
 	var position_offset = previous_marker.global_transform.origin - new_marker.global_transform.origin
 	piece_instance.global_transform.origin += position_offset
-
-
-func _connect_new_pieces(piece_instance : HallwayPiece, current_depth : int):
-	var connection_points : Array[ConnectionMarker] = piece_instance.connection_markers
-	for marker in connection_points:
-		if used_markers.has(marker):
-			continue
-		
-		var chosen_piece = _get_random_hallway_piece()
-		_place_piece_at_marker.call_deferred(marker, chosen_piece, piece_instance, current_depth + 1)
-		await get_tree().create_timer(2)
 
 
 func _place_blockage_at_marker(marker : ConnectionMarker):

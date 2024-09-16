@@ -53,6 +53,7 @@ shape = SubResource("BoxShape3D_gw8xa")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." index="3"]
 collision_layer = 16
+collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)

@@ -2,14 +2,14 @@
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_u2pkw"]
 [ext_resource type="Script" path="res://scripts/facility/facility_generation.gd" id="2_l7x0x"]
-[ext_resource type="PackedScene" uid="uid://c0v1icpr6nmbv" path="res://scenes/hallway_pieces/hallway_end.tscn" id="3_04c6b"]
-[ext_resource type="PackedScene" uid="uid://diog72w76boy2" path="res://scenes/hallway_pieces/hallway_plus.tscn" id="3_44115"]
+[ext_resource type="PackedScene" uid="uid://bo2a2h1k70hyg" path="res://scenes/hallway_pieces/hallway_T.tscn" id="3_5dia6"]
+[ext_resource type="PackedScene" uid="uid://dulhdqox31ym0" path="res://scenes/hallway_pieces/hallway_L.tscn" id="3_8n82l"]
 [ext_resource type="PackedScene" uid="uid://ku0ro42kagdu" path="res://entities/player/player.tscn" id="3_kfemo"]
+[ext_resource type="PackedScene" uid="uid://b0v6tfuavs42s" path="res://scenes/hallway_pieces/hallway_blockage.tscn" id="3_u1kap"]
 [ext_resource type="Script" path="res://scripts/facility/hallway_piece.gd" id="4_4tss1"]
 [ext_resource type="Script" path="res://scripts/facility/connection_marker.gd" id="4_6s4ma"]
-[ext_resource type="PackedScene" uid="uid://bo2a2h1k70hyg" path="res://scenes/hallway_pieces/hallway_T.tscn" id="5_3npya"]
-[ext_resource type="PackedScene" uid="uid://dulhdqox31ym0" path="res://scenes/hallway_pieces/hallway_L.tscn" id="5_g1ods"]
-[ext_resource type="PackedScene" uid="uid://bdru0lhsuv0tj" path="res://scenes/hallway_pieces/hallway_straight.tscn" id="8_g7e5j"]
+[ext_resource type="PackedScene" uid="uid://bdru0lhsuv0tj" path="res://scenes/hallway_pieces/hallway_straight.tscn" id="7_xwwi8"]
+[ext_resource type="PackedScene" uid="uid://c0v1icpr6nmbv" path="res://scenes/hallway_pieces/hallway_end.tscn" id="8_ri7mh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bxn76"]
 size = Vector3(25, 14, 20)
@@ -20,51 +20,59 @@ script = ExtResource("1_u2pkw")
 [node name="Facility" type="Node3D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("2_l7x0x")
-max_depth = 3
+max_depth = 10
 clearance_collision_layer = 16
 
-[node name="HallwayT" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("5_3npya")]
+[node name="HallwayStraight" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("7_xwwi8")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.31134e-06, 0, 15)
+script = ExtResource("4_4tss1")
+connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker"), NodePath("ConnectionMarkerHolder/ConnectonMarker2")]
+
+[node name="HallwayT" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("3_5dia6")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 2.62268e-06, 0, 45)
 script = ExtResource("4_4tss1")
 connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker"), NodePath("ConnectionMarkerHolder/ConnectonMarker2"), NodePath("ConnectionMarkerHolder/ConnectonMarker3")]
 
-[node name="HallwayL" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("5_g1ods")]
-transform = Transform3D(5.96046e-08, 0, 1, 0, 1, 0, -1, 0, 5.96046e-08, -30, 0, 15)
+[node name="HallwayL" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("3_8n82l")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -30, 0, 45)
 script = ExtResource("4_4tss1")
 connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker"), NodePath("ConnectionMarkerHolder/ConnectonMarker2")]
 
-[node name="HallwayStraight" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("8_g7e5j")]
-transform = Transform3D(5.96046e-08, 0, 1, 0, 1, 0, -1, 0, 5.96046e-08, 30, 0, 15)
+[node name="HallwayT2" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("3_5dia6")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -30, 0, 75)
+script = ExtResource("4_4tss1")
+connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker"), NodePath("ConnectionMarkerHolder/ConnectonMarker2"), NodePath("ConnectionMarkerHolder/ConnectonMarker3")]
+
+[node name="HallwayEnd" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("8_ri7mh")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.8147e-06, 0, 75)
+script = ExtResource("4_4tss1")
+connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker")]
+
+[node name="HallwayL2" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("3_8n82l")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -30, 0, 105)
 script = ExtResource("4_4tss1")
 connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker"), NodePath("ConnectionMarkerHolder/ConnectonMarker2")]
 
-[node name="HallwayStraight2" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("8_g7e5j")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -30, 0, 45)
+[node name="HallwayBlockage" type="Node3D" parent="Facility" instance=ExtResource("3_u1kap")]
+transform = Transform3D(1, 0, 4.37114e-08, 0, 1, 0, -4.37114e-08, 0, 1, 2.62268e-06, 0, 60)
+
+[node name="HallwayL3" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("3_8n82l")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -60, 0, 105)
 script = ExtResource("4_4tss1")
 connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker"), NodePath("ConnectionMarkerHolder/ConnectonMarker2")]
 
-[node name="HallwayPlus" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("3_44115")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 60, 0, 15)
+[node name="HallwayStraight2" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("7_xwwi8")]
+transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -60, 0, 75)
 script = ExtResource("4_4tss1")
-connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker"), NodePath("ConnectionMarkerHolder/ConnectonMarker2"), NodePath("ConnectionMarkerHolder/ConnectonMarker3"), NodePath("ConnectionMarkerHolder/ConnectonMarker4")]
+connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker"), NodePath("ConnectionMarkerHolder/ConnectonMarker2")]
 
-[node name="HallwayEnd" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("3_04c6b")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -30, 0, 75)
+[node name="HallwayL4" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("3_8n82l")]
+transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -60, 0, 45)
 script = ExtResource("4_4tss1")
-connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker")]
+connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker"), NodePath("ConnectionMarkerHolder/ConnectonMarker2")]
 
-[node name="HallwayEnd2" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("3_04c6b")]
-transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 60, 0, -15)
-script = ExtResource("4_4tss1")
-connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker")]
-
-[node name="HallwayEnd3" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("3_04c6b")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 60, 0, 45)
-script = ExtResource("4_4tss1")
-connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker")]
-
-[node name="HallwayEnd4" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("3_04c6b")]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 90, 0, 15)
+[node name="HallwayEnd2" type="Node3D" parent="Facility" node_paths=PackedStringArray("connection_markers") instance=ExtResource("8_ri7mh")]
+transform = Transform3D(5.96046e-08, 0, 1, 0, 1, 0, -1, 0, 5.96046e-08, -90, 0, 45)
 script = ExtResource("4_4tss1")
 connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker")]
 
