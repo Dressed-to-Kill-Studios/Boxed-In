@@ -15,9 +15,10 @@ size = Vector3(10, 6, 14)
 [sub_resource type="BoxShape3D" id="BoxShape3D_l4jbu"]
 size = Vector3(29, 7, 29)
 
-[node name="HallwayStraight" node_paths=PackedStringArray("connection_markers", "cam_configs_holder", "clearance_area") instance=ExtResource("1_h5byu")]
+[node name="HallwayStraight" node_paths=PackedStringArray("connection_markers", "storage_room_markers", "cam_configs_holder", "clearance_area") instance=ExtResource("1_h5byu")]
 script = ExtResource("2_14b0q")
 connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker"), NodePath("ConnectionMarkerHolder/ConnectonMarker2")]
+storage_room_markers = [NodePath("StorageRoomMarkerHolder/Marker3D"), NodePath("StorageRoomMarkerHolder/Marker3D2"), NodePath("StorageRoomMarkerHolder/Marker3D3"), NodePath("StorageRoomMarkerHolder/Marker3D4"), NodePath("StorageRoomMarkerHolder/Marker3D5"), NodePath("StorageRoomMarkerHolder/Marker3D6")]
 cam_configs_holder = NodePath("CamConfigsHolder")
 clearance_area = NodePath("ClearanceArea")
 
@@ -38,7 +39,27 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 10)
 shadow_enabled = true
 omni_range = 10.0
 
-[node name="ConnectionMarkerHolder" type="Node3D" parent="." index="2"]
+[node name="StorageRoomMarkerHolder" type="Node3D" parent="." index="2"]
+
+[node name="Marker3D" type="Marker3D" parent="StorageRoomMarkerHolder" index="0"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5, 0, 0)
+
+[node name="Marker3D2" type="Marker3D" parent="StorageRoomMarkerHolder" index="1"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5, 0, -10)
+
+[node name="Marker3D3" type="Marker3D" parent="StorageRoomMarkerHolder" index="2"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5, 0, 10)
+
+[node name="Marker3D4" type="Marker3D" parent="StorageRoomMarkerHolder" index="3"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5, 0, 0)
+
+[node name="Marker3D5" type="Marker3D" parent="StorageRoomMarkerHolder" index="4"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5, 0, -10)
+
+[node name="Marker3D6" type="Marker3D" parent="StorageRoomMarkerHolder" index="5"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5, 0, 10)
+
+[node name="ConnectionMarkerHolder" type="Node3D" parent="." index="3"]
 
 [node name="ConnectonMarker" type="Marker3D" parent="ConnectionMarkerHolder" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15)
@@ -48,7 +69,7 @@ script = ExtResource("3_ainjh")
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -15)
 script = ExtResource("3_ainjh")
 
-[node name="CamConfigsHolder" type="Node3D" parent="." index="3"]
+[node name="CamConfigsHolder" type="Node3D" parent="." index="4"]
 
 [node name="CameraConfiguration" type="Node3D" parent="CamConfigsHolder" index="0"]
 script = ExtResource("4_fewa4")
@@ -81,7 +102,7 @@ assigned_camera = NodePath("../Camera3D")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -7.5)
 shape = SubResource("BoxShape3D_kc2xu")
 
-[node name="ClearanceArea" type="StaticBody3D" parent="." index="4"]
+[node name="ClearanceArea" type="StaticBody3D" parent="." index="5"]
 collision_layer = 16
 collision_mask = 0
 

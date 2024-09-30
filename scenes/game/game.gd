@@ -16,4 +16,6 @@ func _init(_difficulty : DIFFICULTIES = DIFFICULTIES.NORMAL):
 	current_difficulty = _difficulty
 
 func _ready():
-	if not Engine.is_editor_hint(): facility.generate_facility()
+	if Engine.is_editor_hint(): return
+	
+	facility.generate_facility()

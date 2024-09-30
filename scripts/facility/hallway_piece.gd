@@ -2,12 +2,14 @@ extends Node3D
 class_name HallwayPiece
 
 @export var connection_markers : Array[ConnectionMarker]
+@export var storage_room_markers : Array[Marker3D]
 @export var cam_configs_holder : Node3D
 @export var clearance_area : StaticBody3D
 
 
 func _ready():
 	assert(connection_markers, "No Connection Markers")
+	assert(storage_room_markers, "No Storage Room Markers")
 	assert(clearance_area, "No Clearance Area")
 	
 	_check_for_cam_configs()

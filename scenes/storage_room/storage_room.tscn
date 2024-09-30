@@ -1,5 +1,39 @@
-[gd_scene load_steps=2 format=3 uid="uid://bq60k85kqw557"]
+[gd_scene load_steps=6 format=3 uid="uid://bq60k85kqw557"]
 
 [ext_resource type="PackedScene" uid="uid://c6ohmgp7b1odi" path="res://assets/blender_imports/storage_room.glb" id="1_6o44y"]
+[ext_resource type="PackedScene" uid="uid://c158wp3l6o5jq" path="res://scenes/doors/container_door.tscn" id="2_hntrs"]
+[ext_resource type="Script" path="res://scripts/camera_system/camera_configuration.gd" id="3_ler38"]
+[ext_resource type="Script" path="res://scripts/camera_system/camera_area.gd" id="4_bn13o"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vnb3e"]
+size = Vector3(9.5, 6, 9.5)
 
 [node name="storage_room" instance=ExtResource("1_6o44y")]
+
+[node name="ContainerDoor" parent="." index="1" instance=ExtResource("2_hntrs")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="Lights" type="Node3D" parent="." index="2"]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -0.5)
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="CamConfigsHolder" type="Node3D" parent="." index="3"]
+
+[node name="CameraConfiguration" type="Node3D" parent="CamConfigsHolder" index="0"]
+script = ExtResource("3_ler38")
+
+[node name="Camera3D" type="Camera3D" parent="CamConfigsHolder/CameraConfiguration" index="0"]
+transform = Transform3D(0.707107, 0.454519, -0.541675, 0, 0.766044, 0.642788, 0.707107, -0.454519, 0.541675, -4, 5, -1)
+
+[node name="CameraArea" type="Area3D" parent="CamConfigsHolder/CameraConfiguration" index="1" node_paths=PackedStringArray("assigned_camera")]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("4_bn13o")
+assigned_camera = NodePath("../Camera3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CamConfigsHolder/CameraConfiguration/CameraArea" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -5)
+shape = SubResource("BoxShape3D_vnb3e")

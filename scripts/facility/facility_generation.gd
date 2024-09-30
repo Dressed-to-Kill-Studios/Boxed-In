@@ -3,6 +3,7 @@ extends Node3D
 
 signal generation_finished
 
+const STORAGE_ROOM = preload("res://scenes/storage_room/storage_room.tscn")
 const HALLWAY_BLOCKAGE = preload("res://scenes/hallway_pieces/hallway_blockage.tscn")
 const HALLWAYS : Dictionary = {
 	"end" : preload("res://scenes/hallway_pieces/hallway_end.tscn"),
@@ -12,8 +13,10 @@ const HALLWAYS : Dictionary = {
 	"plus shape" : preload("res://scenes/hallway_pieces/hallway_plus.tscn"),
 }
 
-@export var generate : bool = false : set = _set_generate
+@export var add_hallways : bool = false : set = _set_add_hallways
+@export var add_storage_rooms : bool = false : set = _set_add_storage_rooms
 @export var clear : bool = false : set = _set_clear
+@export var clear_rooms : bool = false : set = _set_clear_rooms
 @export var max_depth : int = 5
 @export var creat_loops : bool = true
 @export var hallway_weights : Dictionary = {
@@ -25,28 +28,65 @@ const HALLWAYS : Dictionary = {
 }
 @export_flags_3d_physics var clearance_collision_layer = 1
 
+@export var hallways_holder : Node3D
+@export var storage_rooms_holder : Node3D
+
 var current_depth : int = 0
 var free_markers : Array = []
 
 
 func generate_facility():
+	generate_hallways()
+	await generation_finished
+	generate_storage_rooms()
+
+
+func generate_hallways():
 	clear_facility()
 	await get_tree().create_timer(0.25).timeout
 	_start_generation()
 
 
+func generate_storage_rooms():
+	for hallway in hallways_holder.get_children():
+		
+		if not hallway is HallwayPiece: continue
+		
+		for marker in hallway.storage_room_markers:
+			var storage_room_instance = STORAGE_ROOM.instantiate()
+			
+			storage_rooms_holder.add_child(storage_room_instance, true)
+			storage_room_instance.set_owner(self.get_parent())
+			
+			storage_room_instance.global_transform = marker.global_transform
+
+
 func clear_facility():
-	for child in get_children(): child.queue_free()
+	_clear_rooms()
+	for child in hallways_holder.get_children(): child.queue_free()
 	free_markers.clear()  # Clear free markers
 	current_depth = 0
 
 
-func _set_generate(_value):
-	generate_facility()
+func _set_add_hallways(_value):
+	generate_hallways()
+
+
+func _set_add_storage_rooms(_value):
+	_clear_rooms()
+	generate_storage_rooms()
 
 
 func _set_clear(_value):
 	clear_facility()
+
+
+func _set_clear_rooms(_value):
+	_clear_rooms()
+
+
+func _clear_rooms():
+	for child in storage_rooms_holder.get_children(): child.queue_free()
 
 
 func _start_generation():
@@ -81,7 +121,7 @@ func _place_piece_at_marker(previous_marker : ConnectionMarker, packed_piece : P
 	
 	# Place the new piece
 	var piece_instance : HallwayPiece = packed_piece.instantiate()
-	add_child(piece_instance, true)
+	hallways_holder.add_child(piece_instance, true)
 	piece_instance.set_owner(self.get_parent())
 	
 	# Align the new piece with the previous marker
@@ -147,7 +187,7 @@ func _align_piece_to_marker(piece_instance : HallwayPiece, previous_marker : Con
 
 func _place_blockage_at_marker(marker : ConnectionMarker):
 	var blockage_instance = HALLWAY_BLOCKAGE.instantiate()
-	add_child(blockage_instance, true)
+	hallways_holder.add_child(blockage_instance, true)
 	blockage_instance.set_owner(self.get_parent())
 	
 	blockage_instance.global_transform = marker.global_transform
