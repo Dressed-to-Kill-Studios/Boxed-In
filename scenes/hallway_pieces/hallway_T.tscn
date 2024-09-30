@@ -24,7 +24,29 @@ connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker"), NodePa
 cam_configs_holder = NodePath("CamConfigsHolder")
 clearance_area = NodePath("ClearanceArea")
 
-[node name="ConnectionMarkerHolder" type="Node3D" parent="." index="1"]
+[node name="Lights" type="Node3D" parent="." index="1"]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="Lights" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 4, 0)
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="OmniLight3D4" type="OmniLight3D" parent="Lights" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 4, 0)
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="OmniLight3D5" type="OmniLight3D" parent="Lights" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 10)
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="ConnectionMarkerHolder" type="Node3D" parent="." index="2"]
 
 [node name="ConnectonMarker" type="Marker3D" parent="ConnectionMarkerHolder" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15)
@@ -38,7 +60,7 @@ script = ExtResource("3_kw1cv")
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -15, 0, 0)
 script = ExtResource("3_kw1cv")
 
-[node name="CamConfigsHolder" type="Node3D" parent="." index="2"]
+[node name="CamConfigsHolder" type="Node3D" parent="." index="3"]
 
 [node name="CameraConfiguration" type="Node3D" parent="CamConfigsHolder" index="0"]
 script = ExtResource("4_6ykol")
@@ -84,7 +106,7 @@ assigned_camera = NodePath("../Camera3D3")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 10)
 shape = SubResource("BoxShape3D_5lpwf")
 
-[node name="ClearanceArea" type="StaticBody3D" parent="." index="3"]
+[node name="ClearanceArea" type="StaticBody3D" parent="." index="4"]
 collision_layer = 16
 collision_mask = 0
 

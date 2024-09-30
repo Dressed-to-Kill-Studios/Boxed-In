@@ -18,13 +18,25 @@ connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker")]
 cam_configs_holder = NodePath("CamConfigsHolder")
 clearance_area = NodePath("ClearanceArea")
 
-[node name="ConnectionMarkerHolder" type="Node3D" parent="." index="1"]
+[node name="Lights" type="Node3D" parent="." index="1"]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="OmniLight3D5" type="OmniLight3D" parent="Lights" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 10)
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="ConnectionMarkerHolder" type="Node3D" parent="." index="2"]
 
 [node name="ConnectonMarker" type="Marker3D" parent="ConnectionMarkerHolder" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15)
 script = ExtResource("3_i01mi")
 
-[node name="CamConfigsHolder" type="Node3D" parent="." index="2"]
+[node name="CamConfigsHolder" type="Node3D" parent="." index="3"]
 
 [node name="CameraConfiguration" type="Node3D" parent="CamConfigsHolder" index="0"]
 script = ExtResource("4_v5ugu")
@@ -42,7 +54,7 @@ assigned_camera = NodePath("../Camera3D")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 5)
 shape = SubResource("BoxShape3D_oie4a")
 
-[node name="ClearanceArea" type="StaticBody3D" parent="." index="3"]
+[node name="ClearanceArea" type="StaticBody3D" parent="." index="4"]
 collision_layer = 16
 collision_mask = 0
 
