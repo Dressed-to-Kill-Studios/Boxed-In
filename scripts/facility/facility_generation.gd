@@ -103,9 +103,7 @@ func _place_piece_at_marker(previous_marker : ConnectionMarker, packed_piece : P
 	ray_query.to = ray_query.from + previous_marker.global_transform.basis.z.normalized() * 30  # 30 units forward
 	ray_query.collision_mask = clearance_collision_layer
 	
-	if current_depth == 0: ray_query.exclude = [%SafeRoomClearnaceArea]
-	
-	var result = get_world_3d().direct_space_state.intersect_ray(ray_query)
+	var result = get_world_3d().direct_space_state.intersect_ray(ray_query) if current_depth != 0 else null
 	
 	if result:
 		# If there's a collision, and can't loop, place a blockage and stop
