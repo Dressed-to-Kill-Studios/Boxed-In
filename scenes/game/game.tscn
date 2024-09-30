@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://cg3f1pfn7upc5"]
+[gd_scene load_steps=7 format=3 uid="uid://cg3f1pfn7upc5"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_u2pkw"]
 [ext_resource type="Script" path="res://scripts/facility/facility_generation.gd" id="2_l7x0x"]
+[ext_resource type="Environment" uid="uid://cbnw1gqjj7gu" path="res://static/environment.tres" id="2_ypaan"]
 [ext_resource type="PackedScene" uid="uid://ku0ro42kagdu" path="res://entities/player/player.tscn" id="3_kfemo"]
 [ext_resource type="Script" path="res://scripts/facility/connection_marker.gd" id="4_6s4ma"]
 
@@ -11,6 +12,9 @@ size = Vector3(25, 14, 20)
 [node name="Game" type="Node"]
 script = ExtResource("1_u2pkw")
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("2_ypaan")
+
 [node name="Facility" type="Node3D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("2_l7x0x")
@@ -18,6 +22,7 @@ max_depth = 10
 clearance_collision_layer = 16
 
 [node name="Player" parent="." instance=ExtResource("3_kfemo")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -2)
 
 [node name="Origin" type="Marker3D" parent="."]
 unique_name_in_owner = true

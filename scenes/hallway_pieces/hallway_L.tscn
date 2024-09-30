@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dulhdqox31ym0"]
+[gd_scene load_steps=10 format=3 uid="uid://dulhdqox31ym0"]
 
 [ext_resource type="PackedScene" uid="uid://b2hp4gemhjii4" path="res://assets/blender_imports/hallway_pieces/hallway_L.glb" id="1_apn86"]
 [ext_resource type="Script" path="res://scripts/facility/hallway_piece.gd" id="2_ne0xs"]
@@ -12,12 +12,17 @@ size = Vector3(10, 6, 10)
 [sub_resource type="BoxShape3D" id="BoxShape3D_gw8xa"]
 size = Vector3(10, 6, 10)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_l7u6l"]
+size = Vector3(10, 6, 10)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_cy7af"]
 size = Vector3(29, 7, 29)
 
-[node name="HallwayL" node_paths=PackedStringArray("connection_markers") instance=ExtResource("1_apn86")]
+[node name="HallwayL" node_paths=PackedStringArray("connection_markers", "cam_configs_holder", "clearance_area") instance=ExtResource("1_apn86")]
 script = ExtResource("2_ne0xs")
 connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker"), NodePath("ConnectionMarkerHolder/ConnectonMarker2")]
+cam_configs_holder = NodePath("CamConfigsHolder")
+clearance_area = NodePath("ClearanceArea")
 
 [node name="ConnectionMarkerHolder" type="Node3D" parent="." index="1"]
 
@@ -29,32 +34,47 @@ script = ExtResource("3_pn6x4")
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -15, 0, 0)
 script = ExtResource("3_pn6x4")
 
-[node name="CameraConfiguration" type="Node3D" parent="." index="2"]
+[node name="CamConfigsHolder" type="Node3D" parent="." index="2"]
+
+[node name="CameraConfiguration" type="Node3D" parent="CamConfigsHolder" index="0"]
 script = ExtResource("4_2dtxk")
 
-[node name="Camera3D" type="Camera3D" parent="CameraConfiguration" index="0"]
+[node name="Camera3D" type="Camera3D" parent="CamConfigsHolder/CameraConfiguration" index="0"]
 transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 4, 2, -4)
 fov = 90.0
 
-[node name="Camera3D2" type="Camera3D" parent="CameraConfiguration" index="1"]
+[node name="Camera3D2" type="Camera3D" parent="CamConfigsHolder/CameraConfiguration" index="1"]
 transform = Transform3D(0.707107, 0.241845, -0.664463, 0, 0.939692, 0.34202, 0.707107, -0.241845, 0.664463, -5, 4, 5)
 fov = 90.0
 
-[node name="CameraArea" type="Area3D" parent="CameraConfiguration" index="2"]
+[node name="CameraArea" type="Area3D" parent="CamConfigsHolder/CameraConfiguration" index="2" node_paths=PackedStringArray("assigned_camera")]
+collision_layer = 0
+collision_mask = 2
 script = ExtResource("5_yt7pa")
+assigned_camera = NodePath("../Camera3D")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraConfiguration/CameraArea" index="0"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CamConfigsHolder/CameraConfiguration/CameraArea" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 10)
 shape = SubResource("BoxShape3D_w3h7t")
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="CameraConfiguration/CameraArea" index="1"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="CamConfigsHolder/CameraConfiguration/CameraArea" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 3, 0)
 shape = SubResource("BoxShape3D_gw8xa")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." index="3"]
+[node name="CameraArea2" type="Area3D" parent="CamConfigsHolder/CameraConfiguration" index="3" node_paths=PackedStringArray("assigned_camera")]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("5_yt7pa")
+assigned_camera = NodePath("../Camera3D2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CamConfigsHolder/CameraConfiguration/CameraArea2" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+shape = SubResource("BoxShape3D_l7u6l")
+
+[node name="ClearanceArea" type="StaticBody3D" parent="." index="3"]
 collision_layer = 16
 collision_mask = 0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ClearanceArea" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 shape = SubResource("BoxShape3D_cy7af")

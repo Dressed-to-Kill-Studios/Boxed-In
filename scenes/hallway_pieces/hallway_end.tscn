@@ -1,15 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0v1icpr6nmbv"]
+[gd_scene load_steps=8 format=3 uid="uid://c0v1icpr6nmbv"]
 
 [ext_resource type="PackedScene" uid="uid://up6cvepowhok" path="res://assets/blender_imports/hallway_pieces/hallway_end.glb" id="1_0gdu2"]
 [ext_resource type="Script" path="res://scripts/facility/hallway_piece.gd" id="2_1jo3f"]
 [ext_resource type="Script" path="res://scripts/facility/connection_marker.gd" id="3_i01mi"]
+[ext_resource type="Script" path="res://scripts/camera_system/camera_configuration.gd" id="4_v5ugu"]
+[ext_resource type="Script" path="res://scripts/camera_system/camera_area.gd" id="5_wp3i0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oie4a"]
+size = Vector3(10, 6, 20)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yo7q1"]
 size = Vector3(29, 7, 29)
 
-[node name="HallwayEnd" node_paths=PackedStringArray("connection_markers") instance=ExtResource("1_0gdu2")]
+[node name="HallwayEnd" node_paths=PackedStringArray("connection_markers", "cam_configs_holder", "clearance_area") instance=ExtResource("1_0gdu2")]
 script = ExtResource("2_1jo3f")
 connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker")]
+cam_configs_holder = NodePath("CamConfigsHolder")
+clearance_area = NodePath("ClearanceArea")
 
 [node name="ConnectionMarkerHolder" type="Node3D" parent="." index="1"]
 
@@ -17,10 +24,28 @@ connection_markers = [NodePath("ConnectionMarkerHolder/ConnectonMarker")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15)
 script = ExtResource("3_i01mi")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." index="2"]
+[node name="CamConfigsHolder" type="Node3D" parent="." index="2"]
+
+[node name="CameraConfiguration" type="Node3D" parent="CamConfigsHolder" index="0"]
+script = ExtResource("4_v5ugu")
+
+[node name="Camera3D" type="Camera3D" parent="CamConfigsHolder/CameraConfiguration" index="0"]
+transform = Transform3D(1, 0, 0, 0, 0.92388, 0.382683, 0, -0.382683, 0.92388, 0, 4, 15)
+
+[node name="CameraArea" type="Area3D" parent="CamConfigsHolder/CameraConfiguration" index="1" node_paths=PackedStringArray("assigned_camera")]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("5_wp3i0")
+assigned_camera = NodePath("../Camera3D")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="CamConfigsHolder/CameraConfiguration/CameraArea" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 5)
+shape = SubResource("BoxShape3D_oie4a")
+
+[node name="ClearanceArea" type="StaticBody3D" parent="." index="3"]
 collision_layer = 16
 collision_mask = 0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ClearanceArea" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 shape = SubResource("BoxShape3D_yo7q1")
