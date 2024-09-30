@@ -120,3 +120,8 @@ fire={
 3d_physics/layer_3="Enemy"
 3d_physics/layer_4="Interactable"
 3d_physics/layer_5="HallwayClearance"
+
+[rendering]
+
+occlusion_culling/jitter_projection=false
+occlusion_culling/use_occlusion_culling=true

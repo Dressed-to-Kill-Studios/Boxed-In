@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://dulhdqox31ym0"]
+[gd_scene load_steps=10 format=3 uid="uid://dulhdqox31ym0"]
 
 [ext_resource type="PackedScene" uid="uid://b2hp4gemhjii4" path="res://assets/blender_imports/hallway_pieces/hallway_L.glb" id="1_apn86"]
 [ext_resource type="Script" path="res://scripts/facility/hallway_piece.gd" id="2_ne0xs"]
 [ext_resource type="Script" path="res://scripts/facility/connection_marker.gd" id="3_pn6x4"]
 [ext_resource type="Script" path="res://scripts/camera_system/camera_configuration.gd" id="4_2dtxk"]
 [ext_resource type="Script" path="res://scripts/camera_system/camera_area.gd" id="5_yt7pa"]
+[ext_resource type="ArrayOccluder3D" uid="uid://7yu5nj4uqu6o" path="res://static/occlusion/hallway_pieces/hallway_L.occ" id="6_31gbw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_w3h7t"]
 size = Vector3(10, 6, 20)
@@ -89,7 +90,10 @@ shape = SubResource("BoxShape3D_w3h7t")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 3, 0)
 shape = SubResource("BoxShape3D_gw8xa")
 
-[node name="ClearanceArea" type="StaticBody3D" parent="." index="5"]
+[node name="OccluderInstance3D" type="OccluderInstance3D" parent="." index="5"]
+occluder = ExtResource("6_31gbw")
+
+[node name="ClearanceArea" type="StaticBody3D" parent="." index="6"]
 collision_layer = 16
 collision_mask = 0
 

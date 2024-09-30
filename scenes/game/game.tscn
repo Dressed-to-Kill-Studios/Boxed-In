@@ -18,7 +18,6 @@ environment = ExtResource("2_ypaan")
 [node name="Facility" type="Node3D" parent="." node_paths=PackedStringArray("hallways_holder", "storage_rooms_holder")]
 unique_name_in_owner = true
 script = ExtResource("2_l7x0x")
-max_depth = 10
 clearance_collision_layer = 16
 hallways_holder = NodePath("HallwaysHolder")
 storage_rooms_holder = NodePath("StorageRoomsHolder")
@@ -30,7 +29,7 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 
 [node name="Player" parent="." instance=ExtResource("3_kfemo")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -2)
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 1.07285)
 
 [node name="Origin" type="Marker3D" parent="."]
 unique_name_in_owner = true

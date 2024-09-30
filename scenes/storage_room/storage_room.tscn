@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://bq60k85kqw557"]
+[gd_scene load_steps=7 format=3 uid="uid://bq60k85kqw557"]
 
 [ext_resource type="PackedScene" uid="uid://c6ohmgp7b1odi" path="res://assets/blender_imports/storage_room.glb" id="1_6o44y"]
 [ext_resource type="PackedScene" uid="uid://c158wp3l6o5jq" path="res://scenes/doors/container_door.tscn" id="2_hntrs"]
 [ext_resource type="Script" path="res://scripts/camera_system/camera_configuration.gd" id="3_ler38"]
 [ext_resource type="Script" path="res://scripts/camera_system/camera_area.gd" id="4_bn13o"]
+[ext_resource type="ArrayOccluder3D" uid="uid://ctg28gbctbw0u" path="res://static/occlusion/storage_room/storage_room.occ" id="5_suerd"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vnb3e"]
 size = Vector3(9.5, 6, 9.5)
@@ -37,3 +38,6 @@ assigned_camera = NodePath("../Camera3D")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CamConfigsHolder/CameraConfiguration/CameraArea" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -5)
 shape = SubResource("BoxShape3D_vnb3e")
+
+[node name="OccluderInstance3D" type="OccluderInstance3D" parent="." index="4"]
+occluder = ExtResource("5_suerd")
