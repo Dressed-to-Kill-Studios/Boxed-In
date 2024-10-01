@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bo2a2h1k70hyg"]
+[gd_scene load_steps=12 format=3 uid="uid://bo2a2h1k70hyg"]
 
 [ext_resource type="PackedScene" uid="uid://dlwrr2t7fi2d6" path="res://assets/blender_imports/hallway_pieces/hallway_T.glb" id="1_ie5wf"]
 [ext_resource type="Script" path="res://scripts/facility/hallway_piece.gd" id="2_h3o7x"]
@@ -6,12 +6,13 @@
 [ext_resource type="Script" path="res://scripts/camera_system/camera_configuration.gd" id="4_6ykol"]
 [ext_resource type="Script" path="res://scripts/camera_system/camera_area.gd" id="5_rdftv"]
 [ext_resource type="ArrayOccluder3D" uid="uid://cdm5yepptg75j" path="res://static/occlusion/hallway_pieces/hallway_T.occ" id="6_3sv2h"]
+[ext_resource type="PackedScene" uid="uid://ku0ro42kagdu" path="res://entities/player/player.tscn" id="6_rj4bp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jq07x"]
-size = Vector3(10, 6, 10)
+size = Vector3(11, 6, 10)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_03540"]
-size = Vector3(10, 6, 10)
+size = Vector3(11, 6, 10)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5lpwf"]
 size = Vector3(10, 6, 10)
@@ -102,7 +103,7 @@ script = ExtResource("5_rdftv")
 assigned_camera = NodePath("../Camera3D2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CamConfigsHolder/CameraConfiguration/CameraArea" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 3, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 3, 0)
 shape = SubResource("BoxShape3D_jq07x")
 
 [node name="CameraArea2" type="Area3D" parent="CamConfigsHolder/CameraConfiguration" index="4" node_paths=PackedStringArray("assigned_camera")]
@@ -112,7 +113,7 @@ script = ExtResource("5_rdftv")
 assigned_camera = NodePath("../Camera3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CamConfigsHolder/CameraConfiguration/CameraArea2" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 3, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 3, 0)
 shape = SubResource("BoxShape3D_03540")
 
 [node name="CameraArea3" type="Area3D" parent="CamConfigsHolder/CameraConfiguration" index="5" node_paths=PackedStringArray("assigned_camera")]
@@ -135,3 +136,6 @@ collision_mask = 0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ClearanceArea" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 shape = SubResource("BoxShape3D_pj4mo")
+
+[node name="Player" parent="." index="7" instance=ExtResource("6_rj4bp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.7425, 0, -0.880197)
