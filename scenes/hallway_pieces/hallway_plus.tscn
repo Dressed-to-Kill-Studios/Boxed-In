@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://diog72w76boy2"]
+[gd_scene load_steps=12 format=3 uid="uid://diog72w76boy2"]
 
 [ext_resource type="PackedScene" uid="uid://dw3s6n23epwbn" path="res://assets/blender_imports/hallway_pieces/hallway_plus.glb" id="1_0c577"]
 [ext_resource type="Script" path="res://scripts/facility/hallway_piece.gd" id="2_ho7j3"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://scripts/camera_system/camera_configuration.gd" id="4_jbrdo"]
 [ext_resource type="Script" path="res://scripts/camera_system/camera_area.gd" id="5_2oqt3"]
 [ext_resource type="ArrayOccluder3D" uid="uid://bi7opb5o7yyj0" path="res://static/occlusion/hallway_pieces/hallway_plus.occ" id="6_cl4db"]
-[ext_resource type="PackedScene" uid="uid://ku0ro42kagdu" path="res://entities/player/player.tscn" id="6_wpnj0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xg26n"]
 size = Vector3(10, 6, 20)
@@ -147,9 +146,6 @@ assigned_camera = NodePath("../Camera3D4")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CamConfigsHolder/CameraConfiguration/CameraArea4" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 3, 0)
 shape = SubResource("BoxShape3D_cmure")
-
-[node name="Player" parent="CamConfigsHolder/CameraConfiguration" index="8" instance=ExtResource("6_wpnj0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 0.0929542, 0.200084)
 
 [node name="OccluderInstance3D" type="OccluderInstance3D" parent="." index="5"]
 occluder = ExtResource("6_cl4db")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bo2a2h1k70hyg"]
+[gd_scene load_steps=11 format=3 uid="uid://bo2a2h1k70hyg"]
 
 [ext_resource type="PackedScene" uid="uid://dlwrr2t7fi2d6" path="res://assets/blender_imports/hallway_pieces/hallway_T.glb" id="1_ie5wf"]
 [ext_resource type="Script" path="res://scripts/facility/hallway_piece.gd" id="2_h3o7x"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://scripts/camera_system/camera_configuration.gd" id="4_6ykol"]
 [ext_resource type="Script" path="res://scripts/camera_system/camera_area.gd" id="5_rdftv"]
 [ext_resource type="ArrayOccluder3D" uid="uid://cdm5yepptg75j" path="res://static/occlusion/hallway_pieces/hallway_T.occ" id="6_3sv2h"]
-[ext_resource type="PackedScene" uid="uid://ku0ro42kagdu" path="res://entities/player/player.tscn" id="6_rj4bp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jq07x"]
 size = Vector3(11, 6, 10)
@@ -86,15 +85,15 @@ script = ExtResource("3_kw1cv")
 script = ExtResource("4_6ykol")
 
 [node name="Camera3D" type="Camera3D" parent="CamConfigsHolder/CameraConfiguration" index="0"]
-transform = Transform3D(0, 0.382683, -0.92388, 0, 0.92388, 0.382683, 1, -4.47035e-08, -2.98023e-08, -5, 4, 0)
+transform = Transform3D(-0.5, 0.331413, -0.800103, 0, 0.92388, 0.382683, 0.866025, 0.191341, -0.46194, -5, 4, -3)
 
 [node name="Camera3D2" type="Camera3D" parent="CamConfigsHolder/CameraConfiguration" index="1"]
-transform = Transform3D(0, -0.382683, 0.92388, 0, 0.92388, 0.382683, -1, -1.49012e-08, 0, 5, 4, 0)
+transform = Transform3D(-0.5, -0.331413, 0.800103, 0, 0.92388, 0.382683, -0.866025, 0.191341, -0.46194, 5, 4, -3)
 
 [node name="Camera3D3" type="Camera3D" parent="CamConfigsHolder/CameraConfiguration" index="2"]
-transform = Transform3D(-1, -3.34041e-09, 6.3132e-08, 2.10734e-08, 0.92388, 0.382684, -5.96046e-08, 0.382684, -0.92388, 0, 5, -4)
+transform = Transform3D(1, -1.94693e-08, -8.06445e-09, 2.03553e-08, 0.793353, 0.608762, -5.4542e-09, -0.608762, 0.793353, 0, 5, 14)
 current = true
-fov = 90.0
+fov = 80.0
 
 [node name="CameraArea" type="Area3D" parent="CamConfigsHolder/CameraConfiguration" index="3" node_paths=PackedStringArray("assigned_camera")]
 collision_layer = 0
@@ -136,6 +135,3 @@ collision_mask = 0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ClearanceArea" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 shape = SubResource("BoxShape3D_pj4mo")
-
-[node name="Player" parent="." index="7" instance=ExtResource("6_rj4bp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.7425, 0, -0.880197)
