@@ -5,9 +5,7 @@
 [ext_resource type="Environment" uid="uid://cbnw1gqjj7gu" path="res://static/environment.tres" id="2_ypaan"]
 [ext_resource type="PackedScene" uid="uid://ku0ro42kagdu" path="res://entities/player/player.tscn" id="3_kfemo"]
 [ext_resource type="Script" path="res://scripts/facility/connection_marker.gd" id="4_6s4ma"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_bxn76"]
-size = Vector3(25, 14, 20)
+[ext_resource type="PackedScene" uid="uid://colldxnlig1e7" path="res://scenes/safe_room/safe_room.tscn" id="4_vg5wb"]
 
 [node name="Game" type="Node"]
 script = ExtResource("1_u2pkw")
@@ -28,17 +26,16 @@ unique_name_in_owner = true
 [node name="StorageRoomsHolder" type="Node3D" parent="Facility"]
 unique_name_in_owner = true
 
+[node name="SafeRoom" parent="." instance=ExtResource("4_vg5wb")]
+
 [node name="Player" parent="." instance=ExtResource("3_kfemo")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 1.07285)
+transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 5, 0, -23.9272)
+
+[node name="Camera3D" parent="Player" index="2"]
+current = true
 
 [node name="Origin" type="Marker3D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("4_6s4ma")
 
-[node name="SafeRoomClearnaceArea" type="StaticBody3D" parent="."]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
-collision_layer = 16
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SafeRoomClearnaceArea"]
-shape = SubResource("BoxShape3D_bxn76")
+[editable path="Player"]
