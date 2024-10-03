@@ -1,10 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://ku0ro42kagdu"]
+[gd_scene load_steps=8 format=3 uid="uid://ku0ro42kagdu"]
 
 [ext_resource type="Script" path="res://entities/player/player.gd" id="1_6eupi"]
+[ext_resource type="Shader" uid="uid://bje14tpsbo1o" path="res://static/shaders/posterization.tres" id="2_7nevv"]
+[ext_resource type="Shader" path="res://static/shaders/film_grain.gdshader" id="2_touat"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_rrn1s"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nobc7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4jfhw"]
+shader = ExtResource("2_touat")
+shader_parameter/grain_amount = 0.01
+shader_parameter/grain_size = 1.0
+shader_parameter/animate = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uxsb4"]
+shader = ExtResource("2_7nevv")
+shader_parameter/Steps = 32
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
@@ -31,3 +43,25 @@ spot_range = 100.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 target_position = Vector3(0, 0, -3)
 collision_mask = 8
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+
+[node name="FilmGrainShader" type="ColorRect" parent="CanvasLayer2"]
+material = SubResource("ShaderMaterial_4jfhw")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PosterizationShader" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_uxsb4")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
