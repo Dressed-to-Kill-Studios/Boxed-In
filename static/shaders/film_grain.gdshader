@@ -23,4 +23,3 @@ void fragment() {
 	// Clamp the final color to make sure it stays in the valid range
 	COLOR = clamp(original_color, 0.0, 1.0);
 }
-
