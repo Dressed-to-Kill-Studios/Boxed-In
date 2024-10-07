@@ -1,9 +1,5 @@
-[gd_scene load_steps=3 format=3 uid="uid://b0v6tfuavs42s"]
+[gd_scene load_steps=2 format=3 uid="uid://b0v6tfuavs42s"]
 
 [ext_resource type="PackedScene" uid="uid://bqufh0atcx3cj" path="res://assets/blender_imports/hallway_pieces/hallway_blockage.glb" id="1_jnflu"]
-[ext_resource type="ArrayOccluder3D" uid="uid://mv8akcb1lle1" path="res://static/occlusion/hallway_blockage/hallway_blockage.occ" id="2_yvgni"]
 
 [node name="HallwayBlockage" instance=ExtResource("1_jnflu")]
-
-[node name="OccluderInstance3D" type="OccluderInstance3D" parent="." index="1"]
-occluder = ExtResource("2_yvgni")

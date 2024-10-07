@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://c0v1icpr6nmbv"]
+[gd_scene load_steps=10 format=3 uid="uid://c0v1icpr6nmbv"]
 
 [ext_resource type="PackedScene" uid="uid://up6cvepowhok" path="res://assets/blender_imports/hallway_pieces/hallway_end.glb" id="1_0gdu2"]
 [ext_resource type="Script" path="res://scripts/facility/hallway_piece.gd" id="2_1jo3f"]
+[ext_resource type="PackedScene" uid="uid://4bfw2i8guff1" path="res://scenes/light/light.tscn" id="3_eb3il"]
 [ext_resource type="Script" path="res://scripts/facility/connection_marker.gd" id="3_i01mi"]
 [ext_resource type="Script" path="res://scripts/camera_system/camera_configuration.gd" id="4_v5ugu"]
 [ext_resource type="Script" path="res://scripts/camera_system/camera_area.gd" id="5_wp3i0"]
@@ -22,15 +23,11 @@ clearance_area = NodePath("ClearanceArea")
 
 [node name="Lights" type="Node3D" parent="." index="1"]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Lights" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
-shadow_enabled = true
-omni_range = 10.0
+[node name="Light" parent="Lights" index="0" instance=ExtResource("3_eb3il")]
+transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 6, 0)
 
-[node name="OmniLight3D5" type="OmniLight3D" parent="Lights" index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 10)
-shadow_enabled = true
-omni_range = 10.0
+[node name="Light2" parent="Lights" index="1" instance=ExtResource("3_eb3il")]
+transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 6, 10)
 
 [node name="StorageRoomMarkerHolder" type="Node3D" parent="." index="2"]
 
@@ -75,6 +72,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 5)
 shape = SubResource("BoxShape3D_oie4a")
 
 [node name="OccluderInstance3D" type="OccluderInstance3D" parent="." index="5"]
+visible = false
 occluder = ExtResource("6_ilb00")
 
 [node name="ClearanceArea" type="StaticBody3D" parent="." index="6"]

@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://bdru0lhsuv0tj"]
+[gd_scene load_steps=11 format=3 uid="uid://bdru0lhsuv0tj"]
 
 [ext_resource type="PackedScene" uid="uid://b7t84sybqos21" path="res://assets/blender_imports/hallway_pieces/hallway_straight.glb" id="1_h5byu"]
 [ext_resource type="Script" path="res://scripts/facility/hallway_piece.gd" id="2_14b0q"]
+[ext_resource type="PackedScene" uid="uid://4bfw2i8guff1" path="res://scenes/light/light.tscn" id="3_88ede"]
 [ext_resource type="Script" path="res://scripts/facility/connection_marker.gd" id="3_ainjh"]
 [ext_resource type="Script" path="res://scripts/camera_system/camera_configuration.gd" id="4_fewa4"]
 [ext_resource type="Script" path="res://scripts/camera_system/camera_area.gd" id="5_oa00w"]
@@ -25,20 +26,14 @@ clearance_area = NodePath("ClearanceArea")
 
 [node name="Lights" type="Node3D" parent="." index="1"]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Lights" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
-shadow_enabled = true
-omni_range = 10.0
+[node name="Light" parent="Lights" index="0" instance=ExtResource("3_88ede")]
+transform = Transform3D(-1, -7.64274e-15, -8.74228e-08, 0, -1, 8.74228e-08, -8.74228e-08, 8.74228e-08, 1, 0, 6, 0)
 
-[node name="OmniLight3D3" type="OmniLight3D" parent="Lights" index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -10)
-shadow_enabled = true
-omni_range = 10.0
+[node name="Light3" parent="Lights" index="1" instance=ExtResource("3_88ede")]
+transform = Transform3D(-1, -7.64274e-15, -8.74228e-08, 0, -1, 8.74228e-08, -8.74228e-08, 8.74228e-08, 1, 4.37114e-07, 6, -10)
 
-[node name="OmniLight3D5" type="OmniLight3D" parent="Lights" index="2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 10)
-shadow_enabled = true
-omni_range = 10.0
+[node name="Light4" parent="Lights" index="2" instance=ExtResource("3_88ede")]
+transform = Transform3D(-1, -7.64274e-15, -8.74228e-08, 0, -1, 8.74228e-08, -8.74228e-08, 8.74228e-08, 1, -4.37114e-07, 6, 10)
 
 [node name="StorageRoomMarkerHolder" type="Node3D" parent="." index="2"]
 

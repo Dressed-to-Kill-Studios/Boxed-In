@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://colldxnlig1e7"]
+[gd_scene load_steps=5 format=3 uid="uid://colldxnlig1e7"]
 
 [ext_resource type="PackedScene" uid="uid://bwnq0r75g3iy3" path="res://assets/blender_imports/saferoom_test.glb" id="1_331wi"]
 [ext_resource type="PackedScene" uid="uid://dbuttoyymtfth" path="res://scenes/doors/facility_door.tscn" id="2_f61ft"]
+[ext_resource type="ArrayOccluder3D" uid="uid://cyaxd17jmdmyv" path="res://static/occlusion/hallway_pieces/safe_room.occ" id="3_ltyij"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6pgxo"]
 size = Vector3(44, 11, 29)
@@ -13,18 +14,18 @@ size = Vector3(44, 11, 29)
 [node name="Doors" type="Node3D" parent="."]
 
 [node name="FacilityDoor" parent="Doors" instance=ExtResource("2_f61ft")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 0, -26.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 0, -26.375)
 can_interact = false
 
 [node name="FacilityDoor2" parent="Doors" instance=ExtResource("2_f61ft")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.125)
 
 [node name="FacilityDoor3" parent="Doors" instance=ExtResource("2_f61ft")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -11.25, 0, -2.25)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -11.125, 0, -2.25)
 can_interact = false
 
 [node name="FacilityDoor4" parent="Doors" instance=ExtResource("2_f61ft")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -19.25, -3, -5.75)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -19.125, -3, -5.75)
 can_interact = false
 
 [node name="ClearnaceArea" type="StaticBody3D" parent="."]
@@ -40,5 +41,8 @@ transform = Transform3D(0.914261, 0, -0.405126, 0, 1, 0, 0.405126, 0, 0.914261, 
 light_color = Color(1, 1, 0.8, 1)
 shadow_enabled = true
 omni_range = 7.5
+
+[node name="OccluderInstance3D" type="OccluderInstance3D" parent="."]
+occluder = ExtResource("3_ltyij")
 
 [editable path="saferoom_test"]

@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=3 uid="uid://4bfw2i8guff1"]
+
+[ext_resource type="PackedScene" uid="uid://dbqd5jbbv6bd1" path="res://assets/blender_imports/light.glb" id="1_5ehia"]
+
+[node name="Light" instance=ExtResource("1_5ehia")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+visible = false
+light_energy = 0.2
+light_indirect_energy = 2.0
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, -1)
+visible = false
+light_energy = 0.2
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="." index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, -2)
+visible = false
+light_energy = 0.2
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="OmniLight3D4" type="OmniLight3D" parent="." index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 1)
+visible = false
+light_energy = 0.2
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="OmniLight3D5" type="OmniLight3D" parent="." index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 2)
+visible = false
+light_energy = 0.2
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." index="6"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.5, 0)
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 15.0
+spot_angle = 70.0
