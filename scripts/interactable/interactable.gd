@@ -5,12 +5,6 @@ class_name Interactable
 @export var can_interact_messages : Array[String] = ["I can interact with this."]
 @export var cant_interact_messages : Array[String] = ["I can't interact with this"]
 
-@export_group("Required")
-@export var interact_area : CollisionShape3D
-
-func _ready():
-	assert(interact_area, "No Interact Area")
-
 
 func interact(interactor : CharacterBody3D) -> String:
 	var interact_msg : String = can_interact_messages[randi() % can_interact_messages.size()]

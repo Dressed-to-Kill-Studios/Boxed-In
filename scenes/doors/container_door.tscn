@@ -7,13 +7,12 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_wow8k"]
 size = Vector3(6, 3.5, 0.3)
 
-[node name="ContainerDoor" type="StaticBody3D" node_paths=PackedStringArray("entry_point", "exit_point", "interact_area")]
+[node name="ContainerDoor" type="StaticBody3D" node_paths=PackedStringArray("entry_point", "exit_point")]
 collision_layer = 8
 collision_mask = 0
 script = ExtResource("1_ytkh8")
 entry_point = NodePath("EntryPoint")
 exit_point = NodePath("ExitPoint")
-interact_area = NodePath("CollisionShape3D")
 
 [node name="container_door" parent="." instance=ExtResource("1_pngvl")]
 
