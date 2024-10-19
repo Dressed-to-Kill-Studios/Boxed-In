@@ -86,6 +86,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 3, 0)
 shape = SubResource("BoxShape3D_gw8xa")
 
 [node name="OccluderInstance3D" type="OccluderInstance3D" parent="." index="5"]
+visible = false
 occluder = ExtResource("6_31gbw")
 
 [node name="ClearanceArea" type="StaticBody3D" parent="." index="6"]

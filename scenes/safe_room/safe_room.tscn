@@ -1,8 +1,23 @@
-[gd_scene load_steps=5 format=3 uid="uid://colldxnlig1e7"]
+[gd_scene load_steps=12 format=3 uid="uid://colldxnlig1e7"]
 
 [ext_resource type="PackedScene" uid="uid://bwnq0r75g3iy3" path="res://assets/blender_imports/saferoom_test.glb" id="1_331wi"]
+[ext_resource type="PackedScene" uid="uid://4bfw2i8guff1" path="res://scenes/light/light.tscn" id="2_ch637"]
 [ext_resource type="PackedScene" uid="uid://dbuttoyymtfth" path="res://scenes/doors/facility_door.tscn" id="2_f61ft"]
 [ext_resource type="ArrayOccluder3D" uid="uid://cyaxd17jmdmyv" path="res://static/occlusion/hallway_pieces/safe_room.occ" id="3_ltyij"]
+[ext_resource type="Script" path="res://scripts/camera_system/camera_configuration.gd" id="3_mpi3d"]
+[ext_resource type="Script" path="res://scripts/camera_system/camera_area.gd" id="4_kloq7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b16nl"]
+size = Vector3(7, 8, 11.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sd6ix"]
+size = Vector3(10, 8, 8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6ujqc"]
+size = Vector3(12, 8, 13)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ti4qr"]
+size = Vector3(16, 8, 7)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6pgxo"]
 size = Vector3(44, 11, 29)
@@ -10,6 +25,17 @@ size = Vector3(44, 11, 29)
 [node name="SafeRoom" type="Node3D"]
 
 [node name="saferoom_test" parent="." instance=ExtResource("1_331wi")]
+
+[node name="Lights" type="Node3D" parent="."]
+
+[node name="Light" parent="Lights" instance=ExtResource("2_ch637")]
+transform = Transform3D(4.37114e-08, 3.82137e-15, 1, 8.74228e-08, -1, 0, 1, 8.74228e-08, -4.37114e-08, 2, 8, -23)
+
+[node name="Light2" parent="Lights" instance=ExtResource("2_ch637")]
+transform = Transform3D(-1, -8.74228e-08, 1.74846e-07, 8.74228e-08, -1, 0, 1.74846e-07, 1.52855e-14, 1, -11, 8, -12)
+
+[node name="Light3" parent="Lights" instance=ExtResource("2_ch637")]
+transform = Transform3D(-1, -8.74228e-08, 1.74846e-07, 8.74228e-08, -1, 0, 1.74846e-07, 1.52855e-14, 1, -2, 8, -12)
 
 [node name="Doors" type="Node3D" parent="."]
 
@@ -28,6 +54,61 @@ can_interact = false
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -19.125, -3, -5.75)
 can_interact = false
 
+[node name="CameraConfiguration" type="Node3D" parent="."]
+script = ExtResource("3_mpi3d")
+
+[node name="Camera3D" type="Camera3D" parent="CameraConfiguration"]
+transform = Transform3D(-3.78552e-08, 0.5, -0.866025, 2.18557e-08, 0.866025, 0.5, 1, -1.77636e-15, -4.37114e-08, -1, 6, -13)
+
+[node name="Camera3D2" type="Camera3D" parent="CameraConfiguration"]
+transform = Transform3D(0.707107, -0.532038, 0.465764, 0, 0.658689, 0.752415, -0.707107, -0.532038, 0.465764, 6, 6, -21)
+
+[node name="Camera3D3" type="Camera3D" parent="CameraConfiguration"]
+transform = Transform3D(0.707107, -0.183013, 0.683013, 1.13133e-08, 0.965926, 0.258819, -0.707107, -0.183013, 0.683013, 4, 4, -1)
+
+[node name="Camera3D4" type="Camera3D" parent="CameraConfiguration"]
+transform = Transform3D(-0.866025, 0.160307, -0.473605, 1.49012e-08, 0.94721, 0.320613, 0.5, 0.277659, -0.820308, -7, 5, -16)
+
+[node name="CameraArea" type="Area3D" parent="CameraConfiguration" node_paths=PackedStringArray("assigned_camera")]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("4_kloq7")
+assigned_camera = NodePath("../Camera3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraConfiguration/CameraArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 4, -12.75)
+shape = SubResource("BoxShape3D_b16nl")
+
+[node name="CameraArea2" type="Area3D" parent="CameraConfiguration" node_paths=PackedStringArray("assigned_camera")]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("4_kloq7")
+assigned_camera = NodePath("../Camera3D2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraConfiguration/CameraArea2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 4, -22.3)
+shape = SubResource("BoxShape3D_sd6ix")
+
+[node name="CameraArea3" type="Area3D" parent="CameraConfiguration" node_paths=PackedStringArray("assigned_camera")]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("4_kloq7")
+assigned_camera = NodePath("../Camera3D3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraConfiguration/CameraArea3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -13.7)
+shape = SubResource("BoxShape3D_6ujqc")
+
+[node name="CameraArea4" type="Area3D" parent="CameraConfiguration" node_paths=PackedStringArray("assigned_camera")]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("4_kloq7")
+assigned_camera = NodePath("../Camera3D4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraConfiguration/CameraArea4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -3.7)
+shape = SubResource("BoxShape3D_ti4qr")
+
 [node name="ClearnaceArea" type="StaticBody3D" parent="."]
 collision_layer = 16
 collision_mask = 0
@@ -43,6 +124,7 @@ shadow_enabled = true
 omni_range = 7.5
 
 [node name="OccluderInstance3D" type="OccluderInstance3D" parent="."]
+visible = false
 occluder = ExtResource("3_ltyij")
 
 [editable path="saferoom_test"]
