@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cg3f1pfn7upc5"]
+[gd_scene load_steps=7 format=3 uid="uid://cg3f1pfn7upc5"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_u2pkw"]
 [ext_resource type="Script" path="res://scripts/facility/facility_generation.gd" id="2_l7x0x"]
@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://ku0ro42kagdu" path="res://entities/player/player.tscn" id="3_kfemo"]
 [ext_resource type="Script" path="res://scripts/facility/connection_marker.gd" id="4_6s4ma"]
 [ext_resource type="PackedScene" uid="uid://colldxnlig1e7" path="res://scenes/safe_room/safe_room.tscn" id="4_vg5wb"]
-[ext_resource type="AudioStream" uid="uid://dod383cwj7ycy" path="res://assets/audio/music/title/Echo Stream.wav" id="7_dd66f"]
 
 [node name="Game" type="Node"]
 script = ExtResource("1_u2pkw")
@@ -38,8 +37,5 @@ current = true
 [node name="Origin" type="Marker3D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("4_6s4ma")
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("7_dd66f")
 
 [editable path="Player"]
