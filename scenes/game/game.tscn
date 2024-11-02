@@ -38,6 +38,4 @@ current = true
 unique_name_in_owner = true
 script = ExtResource("4_6s4ma")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-
 [editable path="Player"]
