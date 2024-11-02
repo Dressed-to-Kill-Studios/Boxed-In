@@ -19,5 +19,5 @@ func _init(_difficulty : DIFFICULTIES = DIFFICULTIES.NORMAL):
 func _ready():
 	if Engine.is_editor_hint(): return
 	
-	AudioManager.play(AudioManager.AUDIO_THEMES.AMBIENCE)
+	AudioManager.play(AudioManager.AUDIO_THEMES.SAFE_ROOM, 10.0)
 	facility.generate_facility()

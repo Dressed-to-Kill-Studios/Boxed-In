@@ -37,12 +37,17 @@ const AUDIO = {
 	],
 }
 
-var current_player : AudioStreamPlayer
 var current_theme : AUDIO_THEMES
+var current_player : AudioStreamPlayer
+var current_volume : float = 0.0 #0 (silent) to 1 (full volume)
 
 
 func _ready() -> void:
 	pass
+
+
+func _process(delta: float) -> void:
+	if current_player: current_player.volume_db = linear_to_db(current_volume)
 
 
 func change_theme(audio_theme : AUDIO_THEMES) -> void:
@@ -51,10 +56,11 @@ func change_theme(audio_theme : AUDIO_THEMES) -> void:
 	current_theme = audio_theme
 
 
-func play(audio_theme : AUDIO_THEMES) -> void:
+func play(audio_theme : AUDIO_THEMES, fade : float = 0.0) -> void:
 	if current_player: current_player.queue_free()
 	
 	current_player = AudioStreamPlayer.new()
+	current_player.bus = "Music"
 	add_child(current_player)
 	
 	change_theme(audio_theme)
@@ -62,3 +68,10 @@ func play(audio_theme : AUDIO_THEMES) -> void:
 	
 	current_player.stream = chosen_theme[randi() % chosen_theme.size()]
 	current_player.play()
+	
+	if fade <= 0.0: return
+	
+	current_player.volume_db = -INF
+	
+	var tween := create_tween()
+	tween.tween_property(self, "current_volume", 1.0, fade)
