@@ -42,7 +42,7 @@ const AUDIO = {
 
 var current_theme : AUDIO_THEMES
 var current_player : AudioStreamPlayer
-var current_volume : float = 0.0 #0 (silent) to 1 (full volume)
+var current_volume : float = 0.0 #0.0 (silent) to 1.0 (full volume)
 
 
 func _ready():
@@ -61,19 +61,19 @@ func change_theme(audio_theme : AUDIO_THEMES):
 
 func play(audio_theme : AUDIO_THEMES, fade : float = 0.0, loop_track : bool = true, excluded_track : Resource = null):
 	#Create new audio player
-	if current_player:
+	if current_player: #If currently playing something, wait for player to stop
 		stop()
 		await stopped_playing
 	
 	_create_new_player()
 	
-	#Get audio from theme
+	#Get tracks from theme
 	change_theme(audio_theme)
 	var chosen_theme : Array = AUDIO.get(AUDIO.keys()[current_theme])
 	
 	#Start playing
 	var chosen_track : Resource
-	while true:
+	while true: #Check if chosen track is excluded track
 		chosen_track = chosen_theme[randi() % chosen_theme.size()]
 		
 		if chosen_track != excluded_track: break
@@ -90,15 +90,17 @@ func play(audio_theme : AUDIO_THEMES, fade : float = 0.0, loop_track : bool = tr
 	
 	if not loop_track:
 		await finished_playing
-		play(current_theme, 0.0, false, current_player.stream)
+		play(current_theme, fade, false, current_player.stream)
 
 
 func stop(fade : float = 2.0):
+	#Fade out audio
 	var tween := create_tween()
 	tween.tween_property(self, "current_volume", 0.0, fade)
 	
 	await tween.finished
 	
+	#
 	if current_player: current_player.queue_free()
 	current_player = null
 	stopped_playing.emit(current_theme)
