@@ -100,7 +100,7 @@ func stop(fade : float = 2.0):
 	
 	await tween.finished
 	
-	#
+	#Clear player
 	if current_player: current_player.queue_free()
 	current_player = null
 	stopped_playing.emit(current_theme)
