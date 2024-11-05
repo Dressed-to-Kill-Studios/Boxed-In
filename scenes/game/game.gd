@@ -24,4 +24,4 @@ func _ready():
 
 
 func _process(delta):
-	if Input.is_action_just_released("ui_accept"): AudioManager.play(AudioManager.AUDIO_THEMES.CHASE)
+	if Input.is_action_just_released("ui_accept"): AudioManager.play(AudioManager.AUDIO_THEMES.AMBIENCE)
