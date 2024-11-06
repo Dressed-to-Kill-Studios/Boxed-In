@@ -39,6 +39,8 @@ const AUDIO = {
 		preload("res://assets/audio/music/game_over/Ruin.wav"),
 	],
 }
+const MIN_LOOP_WAIT_TIME_SECONDS : float = 150.0
+const MAX_LOOP_WAIT_TIME_SECONDS : float = 300.0
 
 var current_theme : AUDIO_THEMES
 var current_player : AudioStreamPlayer
@@ -90,6 +92,7 @@ func play(audio_theme : AUDIO_THEMES, fade : float = 0.0, loop_track : bool = tr
 	
 	if not loop_track:
 		await finished_playing
+		await get_tree().create_timer(randf_range(MIN_LOOP_WAIT_TIME_SECONDS, MAX_LOOP_WAIT_TIME_SECONDS)).timeout
 		play(current_theme, fade, false, current_player.stream)
 
 

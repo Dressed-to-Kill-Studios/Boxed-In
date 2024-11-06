@@ -26,6 +26,10 @@ unique_name_in_owner = true
 [node name="StorageRoomsHolder" type="Node3D" parent="Facility"]
 unique_name_in_owner = true
 
+[node name="Origin" type="Marker3D" parent="Facility"]
+unique_name_in_owner = true
+script = ExtResource("4_6s4ma")
+
 [node name="SafeRoom" parent="." instance=ExtResource("4_vg5wb")]
 
 [node name="Player" parent="." instance=ExtResource("3_kfemo")]
@@ -33,9 +37,5 @@ transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 5, 0, -2
 
 [node name="Camera3D" parent="Player" index="2"]
 current = true
-
-[node name="Origin" type="Marker3D" parent="."]
-unique_name_in_owner = true
-script = ExtResource("4_6s4ma")
 
 [editable path="Player"]
