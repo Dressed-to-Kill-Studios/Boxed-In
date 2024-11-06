@@ -26,6 +26,7 @@ buses/default_bus_layout="res://static/default_bus_layout.tres"
 [autoload]
 
 AudioManager="*res://scripts/autoload/audio_manager.gd"
+Debug="*res://scripts/autoload/debug.gd"
 
 [display]
 
