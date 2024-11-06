@@ -29,6 +29,7 @@ const AUDIO = {
 		preload("res://assets/audio/ambience/Ambience_3.mp3"),
 		preload("res://assets/audio/ambience/Ambience_4.mp3"),
 		preload("res://assets/audio/ambience/Ambience_5.mp3"),
+		preload("res://assets/audio/ambience/Ambience_6.mp3"),
 	],
 	"chase" : [
 		preload("res://assets/audio/music/chase/Vision.wav")
