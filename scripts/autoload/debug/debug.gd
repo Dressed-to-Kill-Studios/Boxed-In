@@ -3,9 +3,13 @@ extends Node
 #Signals
 signal debug_messege
 
+const debug_panel_path = preload("res://scenes/debug/debug_panel.tscn")
+
 var debug_on : bool = false : set = _set_debug
 
 #Refrences
+var debug_panel : Control
+
 var player : Player = null
 
 #Commands
@@ -16,15 +20,17 @@ var DEBUG_COMMAND : DebugCommand = DebugCommand.new(\
 	[ArgumentFormat.new("enable", TYPE_BOOL, true)])
 
 var TEST_COMMAND : DebugCommand = DebugCommand.new(\
-	"_test", \
+	"test", \
 	"This command is for testing purposes.", \
 	func(): send_debug_messege("Test Command fired.") ; pass)
+
 var PING_PONG_COMMAND : DebugCommand = DebugCommand.new(\
-	"_ping", \
+	"ping", \
 	"This command responds back.", \
 	func(): send_debug_messege("Pong!"))
+
 var REPEAT_COMMAND : DebugCommand = DebugCommand.new(\
-	"_repeat", \
+	"repeat", \
 	"This command repeats back what was said.", \
 	func(text : String): send_debug_messege(text), \
 	[ArgumentFormat.new("text", TYPE_STRING)])
@@ -47,7 +53,8 @@ var command_list : Array[DebugCommand] = [
 
 
 func _ready():
-	pass
+	debug_panel = debug_panel_path.instantiate()
+	add_child(debug_panel)
 
 
 func _set_debug(value):
