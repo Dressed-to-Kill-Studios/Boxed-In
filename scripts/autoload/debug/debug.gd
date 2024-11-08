@@ -54,6 +54,7 @@ var command_list : Array[DebugCommand] = [
 
 func _ready():
 	debug_panel = debug_panel_path.instantiate()
+	debug_panel.hide()
 	add_child(debug_panel)
 
 
