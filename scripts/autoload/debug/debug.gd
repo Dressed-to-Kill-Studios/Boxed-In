@@ -3,42 +3,60 @@ extends Node
 #Signals
 signal debug_messege
 
+#Constants
 const debug_panel_path = preload("res://scenes/debug/debug_panel.tscn")
 
+#
 var debug_on : bool = false : set = _set_debug
 
 #Refrences
 var debug_panel : Control
-
 var player : Player = null
 
 #Commands
-var DEBUG_COMMAND : DebugCommand = DebugCommand.new(\
+var DEBUG_COMMAND := DebugCommand.new(\
 	"debug", \
 	"This command enables or disables the debug commands.", \
 	_set_debug, \
 	[ArgumentFormat.new("enable", TYPE_BOOL, true)])
 
-var TEST_COMMAND : DebugCommand = DebugCommand.new(\
-	"test", \
+var TEST_COMMAND := DebugCommand.new(\
+	"_test", \
 	"This command is for testing purposes.", \
-	func(): send_debug_messege("Test Command fired.") ; pass)
+	func(): send_debug_messege("Test Command fired."))
 
-var PING_PONG_COMMAND : DebugCommand = DebugCommand.new(\
-	"ping", \
+var PING_PONG_COMMAND := DebugCommand.new(\
+	"_ping", \
 	"This command responds back.", \
 	func(): send_debug_messege("Pong!"))
 
-var REPEAT_COMMAND : DebugCommand = DebugCommand.new(\
-	"repeat", \
+var REPEAT_COMMAND := DebugCommand.new(\
+	"_repeat", \
 	"This command repeats back what was said.", \
 	func(text : String): send_debug_messege(text), \
 	[ArgumentFormat.new("text", TYPE_STRING)])
 
-var HELP_COMMAND : DebugCommand = DebugCommand.new(\
+var HELP_COMMAND := DebugCommand.new(\
 	"help", \
 	"This command shows all usable commands.", \
 	help_command)
+
+var QUIT_COMMAND := DebugCommand.new(\
+	"quit", \
+	"This command closes the game.", \
+	func(): send_debug_messege("Quitting game."); await get_tree().create_timer(0.5).timeout; get_tree().quit())
+
+var PLAY_SOUNDTRACK := DebugCommand.new(\
+	"play_soundtrack", \
+	"Play soundtrack from theme.", \
+	func(theme : int, fade : float): AudioManager.play(theme, fade), \
+	[ArgumentFormat.new("audio_theme", TYPE_INT), ArgumentFormat.new("fade", TYPE_FLOAT)])
+
+var STOP_SOUNDTRACK := DebugCommand.new(\
+	"stop_soundtrack", \
+	"Stop current soundtrack.", \
+	func(fade : float): AudioManager.stop(fade), \
+	[ArgumentFormat.new("fade", TYPE_FLOAT)])
 
 #Allowed Commands
 var command_list : Array[DebugCommand] = [
@@ -49,10 +67,16 @@ var command_list : Array[DebugCommand] = [
 	REPEAT_COMMAND,
 	
 	HELP_COMMAND,
+	QUIT_COMMAND,
+	
+	#Music
+	PLAY_SOUNDTRACK,
+	STOP_SOUNDTRACK,
 ]
 
 
 func _ready():
+	#Add Debug panel
 	debug_panel = debug_panel_path.instantiate()
 	debug_panel.hide()
 	add_child(debug_panel)
@@ -152,9 +176,9 @@ func help_command():
 				TYPE_STRING:
 					single_arg_text = "[color=lawngreen]<string>[/color]"
 			
-			single_arg_text = "%s = %s %s" % [arg.argument_name, arg.default_value, single_arg_text] if arg.default_value \
-				else "%s%s" % [arg.argument_name, single_arg_text]
-			single_arg_text = "[%s]" % single_arg_text if arg.default_value else "(%s)" % single_arg_text
+			single_arg_text = "%s = %s %s" % [arg.argument_name, arg.default_value, single_arg_text] if arg.default_value\
+				else "%s %s" % [arg.argument_name, single_arg_text]
+			single_arg_text = "[lb]%s[rb]" % single_arg_text if arg.default_value else "(%s)" % single_arg_text
 			arg_text.append(single_arg_text)
 		
 		if not command.id.begins_with("_"): \
