@@ -49,13 +49,13 @@ var QUIT_COMMAND := DebugCommand.new(\
 var PLAY_SOUNDTRACK := DebugCommand.new(\
 	"play_soundtrack", \
 	"Play soundtrack from theme.", \
-	func(theme : int, fade : float): AudioManager.play(theme, fade), \
+	func(theme : int, fade : float): AudioManager.play(theme, fade); send_debug_messege("Playing theme %s." % theme), \
 	[ArgumentFormat.new("audio_theme", TYPE_INT), ArgumentFormat.new("fade", TYPE_FLOAT)])
 
 var STOP_SOUNDTRACK := DebugCommand.new(\
 	"stop_soundtrack", \
 	"Stop current soundtrack.", \
-	func(fade : float): AudioManager.stop(fade), \
+	func(fade : float): AudioManager.stop(fade); send_debug_messege("Stopped current soundtrack."), \
 	[ArgumentFormat.new("fade", TYPE_FLOAT)])
 
 #Allowed Commands
@@ -85,7 +85,7 @@ func _ready():
 func _set_debug(value):
 	debug_on = value
 	
-	send_debug_messege("Debug commands set to %s" % debug_on)
+	send_debug_messege("Debug commands set to %s." % debug_on)
 
 
 func command_evaluation(command_id : String, arguments : Array):
@@ -100,12 +100,12 @@ func command_evaluation(command_id : String, arguments : Array):
 			command = cmd
 			break
 	
-	if not debug_on and command != DEBUG_COMMAND:#Debug commands on check
-		send_debug_messege("Debug commands are not on")
+	if not debug_on and command != DEBUG_COMMAND: #Debug commands on check
+		send_debug_messege("Debug commands are not turned on.")
 		return
 	
 	if not command: #Valid Command Check
-		send_debug_messege("Command not found")
+		send_debug_messege("Command not found.")
 		return
 	
 	
@@ -116,11 +116,11 @@ func command_evaluation(command_id : String, arguments : Array):
 		if arg.default_value == null: required_arguments += 1
 	
 	if arguments.size() < required_arguments: 
-		send_debug_messege('Not enough arguments given for the "%s" command' % command_id.capitalize())
+		send_debug_messege('Not enough arguments given for the "%s" command. Expected at least %s.' % [command_id.capitalize(), required_arguments])
 		return
 		
 	if arguments.size() > command.format.size(): #Too many args
-		send_debug_messege('Too many arguments given for the "%s" command' % command_id.capitalize())
+		send_debug_messege('Too many arguments given for the "%s" command. Expected at most %s.' % [command_id.capitalize(), command.format.size()])
 		return
 	
 	
@@ -139,14 +139,22 @@ func command_evaluation(command_id : String, arguments : Array):
 				if arguments[n].to_lower() == "true": passing_arguments.append(true)
 				elif arguments[n].to_lower() == "false": passing_arguments.append(false)
 				else:
-					send_debug_messege("Incorrect argument type (argument %s)" % [n + 1])
+					_send_incorrect_argument_messege(n + 1, typeof(arguments[n]), TYPE_BOOL)
 					return
 			
 			TYPE_FLOAT:
+				if not arguments[n].is_valid_float():
+					_send_incorrect_argument_messege(n + 1, typeof(arguments[n]), TYPE_FLOAT)
+					return
+				
 				passing_arguments.append(float(arguments[n]))
 			
 			TYPE_INT:
-				passing_arguments.append(int(arguments[n]))
+				if not arguments[n].is_valid_int():
+					_send_incorrect_argument_messege(n + 1, typeof(arguments[n]), TYPE_INT)
+					return
+				
+				passing_arguments.append(float(arguments[n]))
 			
 			TYPE_STRING:
 				passing_arguments.append(arguments[n])
@@ -163,19 +171,7 @@ func help_command():
 		for arg in command.format:
 			var single_arg_text : String = ""
 			
-			match arg.argument_type:
-				TYPE_BOOL:
-					single_arg_text = "[color=red]<bool>[/color]"
-				
-				TYPE_INT:
-					single_arg_text = "[color=darkblue]<int>[/color]"
-				
-				TYPE_FLOAT:
-					single_arg_text = "[color=aqua]<float>[/color]"
-				
-				TYPE_STRING:
-					single_arg_text = "[color=lawngreen]<string>[/color]"
-			
+			single_arg_text = _type_to_string(arg.argument_type)
 			single_arg_text = "%s = %s %s" % [arg.argument_name, arg.default_value, single_arg_text] if arg.default_value\
 				else "%s %s" % [arg.argument_name, single_arg_text]
 			single_arg_text = "[lb]%s[rb]" % single_arg_text if arg.default_value else "(%s)" % single_arg_text
@@ -190,6 +186,35 @@ func help_command():
 
 func send_debug_messege(text : String):
 	debug_messege.emit(text)
+
+
+func _send_incorrect_argument_messege(arg_pos : int, recieved_arg_type : int, expected_arg_type : int):
+	var recieved_text : String = str(recieved_arg_type)
+	var expected_text : String = str(expected_arg_type)
+	
+	recieved_text = _type_to_string(recieved_arg_type)
+	expected_text = _type_to_string(expected_arg_type)
+	
+	send_debug_messege("Incorrect argument type (Argument %s: recieved %s, expected %s)" %\
+	[arg_pos, recieved_text, expected_text])
+
+
+func _type_to_string(type : int) -> String:
+	match type:
+		TYPE_BOOL:
+			return "[color=red]<bool>[/color]"
+		
+		TYPE_INT:
+			return "[color=darkblue]<int>[/color]"
+		
+		TYPE_FLOAT:
+			return "[color=aqua]<float>[/color]"
+		
+		TYPE_STRING:
+			return "[color=lawngreen]<string>[/color]"
+		
+		_:
+			return ""
 
 
 class ArgumentFormat:
