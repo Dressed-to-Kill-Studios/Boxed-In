@@ -1,3 +1,4 @@
+#I dont remember how some of the features in this script work i ripped it straight from Fully Armed Defense - 11/11/2024
 extends Control
 
 @onready var text_label = %RichTextLabel
@@ -44,7 +45,9 @@ func _input(event):
 		if not visible: return
 		
 		change_suggest_label()
-		if selected_suggest_label: line_edit.text = selected_suggest_label.text
+		if selected_suggest_label: 
+			line_edit.text = selected_suggest_label.text
+			line_edit.caret_column = line_edit.text.length()
 	
 
 
