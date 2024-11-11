@@ -1,10 +1,7 @@
 #I dont remember how some of the features in this script work i ripped it straight from Fully Armed Defense - 11/11/2024
 extends Control
 
-@onready var text_label = %RichTextLabel
-@onready var line_edit = %LineEdit
-@onready var help_text_container = %HelpTextContainer
-
+const SIMILARITY_THRESHOLD = 0.25
 
 var text_history : Array[String] = [] : set = _set_text_history
 var history_index : int = 0 : set = _set_history_index
@@ -15,6 +12,11 @@ var selected_suggest_label : Label = null :
 		
 		for label in help_text_container.get_children(): label.self_modulate = Color.WHITE
 		selected_suggest_label.self_modulate = Color.YELLOW
+
+@onready var text_label = %RichTextLabel
+@onready var line_edit = %LineEdit
+@onready var help_text_container = %HelpTextContainer
+
 
 func _ready():
 	Debug.debug_messege.connect(add_label_text)
@@ -60,17 +62,17 @@ func _set_text_history(value):
 func _set_history_index(value):
 	history_index = value
 	
-	#FIXME:I was tired when i wrote this, i got no clue whats going on now bro
+	#FIXME:I was tired when I wrote this, I got no clue whats going on now bro
 	if abs(history_index) > text_history.size(): history_index = text_history.size() * -1
 	
 	if history_index == 0:
 		line_edit.clear()
 	elif history_index < 0:
 		line_edit.text = text_history[history_index]
-		line_edit.set_caret_column(line_edit.get_text().length())
 	elif history_index > 0:
 		history_index = 0
 	
+	line_edit.caret_column = line_edit.text.length()
 	suggest(line_edit.text)
 
 
@@ -121,7 +123,7 @@ func suggest(text : String):
 			"similarity_value" : text.similarity(command.id),
 		}
 		
-		if dict.similarity_value >= 0.25: similar_strings.append(dict)
+		if dict.similarity_value >= SIMILARITY_THRESHOLD: similar_strings.append(dict)
 	
 	similar_strings.sort_custom(func(a, b): return a.similarity_value < b.similarity_value)
 	
