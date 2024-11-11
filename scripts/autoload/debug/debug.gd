@@ -50,7 +50,7 @@ var PLAY_SOUNDTRACK := DebugCommand.new(\
 	"play_soundtrack", \
 	"Play soundtrack from theme.", \
 	func(theme : int, fade : float): AudioManager.play(theme, fade); send_debug_messege("Playing theme %s." % theme), \
-	[ArgumentFormat.new("audio_theme", TYPE_INT), ArgumentFormat.new("fade", TYPE_FLOAT)])
+	[ArgumentFormat.new("theme", TYPE_INT), ArgumentFormat.new("fade", TYPE_FLOAT)])
 
 var STOP_SOUNDTRACK := DebugCommand.new(\
 	"stop_soundtrack", \
