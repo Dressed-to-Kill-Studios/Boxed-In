@@ -47,10 +47,13 @@ func _input(event):
 		if not visible: return
 		
 		change_suggest_label()
+		
 		if selected_suggest_label: 
-			line_edit.text = selected_suggest_label.text
+			var command_id : String = Array(selected_suggest_label.text.split(" ")).pop_front()
+			
+			line_edit.text = command_id
 			line_edit.caret_column = line_edit.text.length()
-	
+
 
 
 func _set_text_history(value):
@@ -104,7 +107,7 @@ func change_suggest_label():
 	var current_label_index : int = labels.find(selected_suggest_label)
 	
 	selected_suggest_label = labels[current_label_index - 1]
-
+	
 
 func suggest(text : String):
 	text = text.to_lower()
@@ -119,7 +122,7 @@ func suggest(text : String):
 		if command.id.begins_with("_"): continue
 		
 		var dict = {
-			"command_id" : command.id,
+			"command" : command,
 			"similarity_value" : text.similarity(command.id),
 		}
 		
@@ -129,8 +132,14 @@ func suggest(text : String):
 	
 	for command in similar_strings:
 		var label = Label.new()
+		label.text = command.command.id
 		
-		label.text = command.command_id
+		var arguments_text : String
+		for args in command.command.format:
+			arguments_text = arguments_text + " %s<%s>" % [args.argument_name, type_string(args.argument_type)]
+		
+		text = Array(text.split(" ")).pop_front()
+		if text == label.text: label.text = "%s%s" % [label.text, arguments_text]
 		help_text_container.add_child(label)
 	
 
