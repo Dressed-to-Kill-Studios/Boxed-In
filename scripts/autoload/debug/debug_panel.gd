@@ -55,7 +55,6 @@ func _input(event):
 			line_edit.caret_column = line_edit.text.length()
 
 
-
 func _set_text_history(value):
 	text_history = value
 	
