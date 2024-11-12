@@ -136,6 +136,7 @@ func suggest(text : String):
 		var arguments_text : String
 		for args in command.command.format:
 			arguments_text = arguments_text + " %s<%s>" % [args.argument_name, type_string(args.argument_type)]
+			if args.default_value != null: arguments_text = arguments_text + " = %s" % args.default_value
 		
 		text = Array(text.split(" ")).pop_front()
 		if text == label.text: label.text = "%s%s" % [label.text, arguments_text]
