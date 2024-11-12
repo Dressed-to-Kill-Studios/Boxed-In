@@ -50,7 +50,7 @@ var PLAY_SOUNDTRACK := DebugCommand.new(\
 	"play_soundtrack", \
 	"Play soundtrack from theme.", \
 	func(theme : int, fade : float): AudioManager.play(theme, fade); send_debug_messege("Playing theme %s." % theme), \
-	[ArgumentFormat.new("theme", TYPE_INT), ArgumentFormat.new("fade", TYPE_FLOAT)])
+	[ArgumentFormat.new("theme", TYPE_INT), ArgumentFormat.new("fade", TYPE_FLOAT, 0.0)])
 
 var STOP_SOUNDTRACK := DebugCommand.new(\
 	"stop_soundtrack", \
@@ -172,7 +172,7 @@ func help_command():
 			var single_arg_text : String = ""
 			
 			single_arg_text = _type_to_string(arg.argument_type)
-			single_arg_text = "%s = %s %s" % [arg.argument_name, arg.default_value, single_arg_text] if arg.default_value\
+			single_arg_text = "%s = %s %s" % [arg.argument_name, arg.default_value, single_arg_text] if  arg.default_value != null\
 				else "%s %s" % [arg.argument_name, single_arg_text]
 			single_arg_text = "[lb]%s[rb]" % single_arg_text if arg.default_value else "(%s)" % single_arg_text
 			arg_text.append(single_arg_text)
