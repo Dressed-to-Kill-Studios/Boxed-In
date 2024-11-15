@@ -11,7 +11,6 @@ var debug_on : bool = false : set = _set_debug
 
 #Refrences
 var debug_panel : Control
-var player : Player = null
 
 #Commands
 var DEBUG_COMMAND := DebugCommand.new(\

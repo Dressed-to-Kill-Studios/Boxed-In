@@ -25,10 +25,12 @@ func _ready():
 
 func _input(event):
 	if Input.is_action_just_released("debug"):
+		var player : Player = get_tree().get_first_node_in_group("Player")
 		
+		player.input_locked = !visible
 		visible = !visible
 		
-		if visible: #Opened
+		if visible: #If it was just opened
 			line_edit.grab_focus()
 			line_edit.clear()
 			
