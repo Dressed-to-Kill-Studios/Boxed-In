@@ -7,6 +7,7 @@ var turn_speed : float = 3.0
 var mouse_sens : float = 0.3
 
 #Movement
+var input_locked : bool = false
 var can_move : bool = true
 
 enum MOVEMENT_STATES {
