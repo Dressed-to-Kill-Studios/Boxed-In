@@ -18,3 +18,4 @@ func _init(_difficulty : DIFFICULTIES = DIFFICULTIES.NORMAL):
 
 func _ready():
 	facility.generate_facility()
+	AudioManager.play(0)

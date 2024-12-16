@@ -38,4 +38,10 @@ transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 5, 0, -2
 [node name="Camera3D" parent="Player" index="2"]
 current = true
 
+[node name="CanvasLayer2" parent="Player" index="5"]
+visible = true
+
+[node name="CanvasLayer" parent="Player" index="6"]
+visible = true
+
 [editable path="Player"]

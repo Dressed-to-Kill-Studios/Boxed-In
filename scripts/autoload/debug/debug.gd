@@ -48,7 +48,7 @@ var QUIT_COMMAND := DebugCommand.new(\
 var PLAY_SOUNDTRACK := DebugCommand.new(\
 	"play_soundtrack", \
 	"Play soundtrack from theme.", \
-	func(theme : int, fade : float): AudioManager.play(theme, fade); send_debug_messege("Playing theme %s." % theme), \
+	play_audio_theme_command, \
 	[ArgumentFormat.new("theme", TYPE_INT), ArgumentFormat.new("fade", TYPE_FLOAT, 0.0)])
 
 var STOP_SOUNDTRACK := DebugCommand.new(\
@@ -185,6 +185,16 @@ func help_command():
 
 func send_debug_messege(text : String):
 	debug_messege.emit(text)
+
+
+func play_audio_theme_command(theme : int, fade : float):
+	var result = await AudioManager.play(theme, fade)
+	print(result)
+	if not result:
+		send_debug_messege("Chosen them does not exist.")
+		return
+	
+	send_debug_messege("Playing theme %s." % theme)
 
 
 func _send_incorrect_argument_messege(arg_pos : int, recieved_arg_type : int, expected_arg_type : int):

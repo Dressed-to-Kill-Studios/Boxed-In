@@ -62,7 +62,9 @@ func change_theme(audio_theme : AUDIO_THEMES):
 	current_theme = audio_theme
 
 
-func play(audio_theme : AUDIO_THEMES, fade : float = 0.0, loop_track : bool = true, excluded_track : Resource = null):
+func play(audio_theme : AUDIO_THEMES, fade : float = 0.0, loop_track : bool = true, excluded_track : Resource = null) -> bool:
+	if audio_theme not in AUDIO_THEMES.values(): return false #Theme dosent exist
+	
 	#Create new audio player
 	if current_player: #If currently playing something, wait for player to stop
 		stop()
@@ -95,6 +97,8 @@ func play(audio_theme : AUDIO_THEMES, fade : float = 0.0, loop_track : bool = tr
 		await finished_playing
 		await get_tree().create_timer(randf_range(MIN_LOOP_WAIT_TIME_SECONDS, MAX_LOOP_WAIT_TIME_SECONDS)).timeout
 		play(current_theme, fade, false, current_player.stream)
+	
+	return true
 
 
 func stop(fade : float = 2.0):
